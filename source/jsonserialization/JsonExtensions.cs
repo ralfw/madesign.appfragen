@@ -25,7 +25,7 @@ namespace jsonserialization
 
         private static string ObjectToJson(object obj)
         {
-            if (obj.GetType() == typeof(DynamicJsonObject)) return DynamicJsonObjectToJson(obj as DynamicJsonObject);
+            if (obj.GetType() == typeof (DynamicJsonObject)) return DynamicJsonObjectToJson(obj as DynamicJsonObject);
             if (!(obj is ExpandoObject)) return Json.Encode(obj);
 
             var json = "{";
@@ -36,7 +36,7 @@ namespace jsonserialization
                 if (iKey++ > 0) json += ", ";
                 json += "\"" + key + "\": ";
 
-                if (dict[key].GetType() == typeof(DynamicJsonObject))
+                if (dict[key].GetType() == typeof (DynamicJsonObject))
                     json += DynamicJsonObjectToJson(dict[key] as DynamicJsonObject);
                 else if (dict[key] is ExpandoObject)
                     json += ObjectToJson(dict[key]);
@@ -47,7 +47,7 @@ namespace jsonserialization
             return json;
         }
 
-        static string DynamicJsonObjectToJson(this DynamicJsonObject obj)
+        private static string DynamicJsonObjectToJson(this DynamicJsonObject obj)
         {
             var json = "{";
             var iName = 0;
@@ -66,7 +66,8 @@ namespace jsonserialization
 
         // source: http://stackoverflow.com/questions/4580397/json-formatter-in-c
         private const string INDENT_STRING = "  ";
-        private static string PrettifyJson(string str)
+
+        public static string PrettifyJson(this string str)
         {
             var indent = 0;
             var quoted = false;
