@@ -8,6 +8,7 @@ namespace af.contracts
 {
     public class Befragung
     {
+        public string Dateiname;
         public List<Frage> Fragen;
 
         public class Frage
