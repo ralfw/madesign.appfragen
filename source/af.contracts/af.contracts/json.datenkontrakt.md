@@ -8,6 +8,29 @@
 }
 
 
+# Mit Json umgehen
+## Json empfangen, Kommando ausführen
+
+void Process(string json) {
+  dynamic obj = json.FromJson();
+  switch((string)obj.cmd) {
+	case "...":
+		...
+		break;
+  }
+}
+
+## Output als Json senden
+...
+var obj = new ExpandoObject();
+obj.cmd = "Beantworten";
+obj.payload = new ExpandoObject();
+obj.payload.AntwortmoeglichkeitId = "abc";
+
+var json = obj.ToJson();
+Json_output(json);
+
+
 # Vom UI
 
 ## Kommando: Beantworten
@@ -30,6 +53,10 @@
 
 
 # Zum UI
+
+## Kommando: Starten
+{
+}
 
 ## Kommando: Fragebogen anzeigen
 {
