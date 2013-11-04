@@ -1,5 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Dynamic;
 using af.ui;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace af.ui.test
 {
@@ -57,15 +59,15 @@ namespace af.ui.test
         #endregion
 
         [TestMethod]
-        public void TestMethod1()
+        public void TestStarten()
         {
-            //
-            // TODO: Add test logic here
-            //
-            var json = "Fragebogen anzeigen";
+            dynamic jsonObject = new ExpandoObject();
+            jsonObject.cmd = "Starten";
+
+            var json = jsonserialization.JsonExtensions.ToJson(jsonObject);
+            //jsonObject.ToJson();
 
             var ui = new Ui();
-
             ui.Process(json);
         }
     }
