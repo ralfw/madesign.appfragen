@@ -7,11 +7,11 @@ using af.contracts;
 
 namespace af.ui
 {
-    public class Class1 : IComponent
+    public class Ui : IComponent
     {
         public void Process(string json)
         {
-            throw new NotImplementedException();
+            
         }
 
         public event Action<string> Json_output;
