@@ -22,7 +22,7 @@ void Process(string json) {
 
 ## Output als Json senden
 ...
-var obj = new ExpandoObject();
+dynamic obj = new ExpandoObject();
 obj.cmd = "Beantworten";
 obj.payload = new ExpandoObject();
 obj.payload.AntwortmoeglichkeitId = "abc";
@@ -67,7 +67,7 @@ Json_output(json);
 				{
 					"Id": "<id>",
 					"Text": "<antwortmoeglichkeitentext>",
-					"Ausgewaehlt": "true", // oder false
+					"Ausgewaehlt": true, // oder false
 				},
 				...
 			]

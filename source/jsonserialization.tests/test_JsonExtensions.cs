@@ -13,7 +13,7 @@ namespace jsonserialization.tests
         [Test]
         public void ToAndFro()
         {
-            var f = new Foo {Name = "peter", Age = 42};
+            var f = new Foo {Name = "peter", Age = 42, TooOld = false};
             var js = f.ToJson();
             Console.WriteLine(js);
 
@@ -27,5 +27,6 @@ namespace jsonserialization.tests
     {
         public string Name { get; set; }
         public int Age;
+        public bool TooOld;
     }
 }
