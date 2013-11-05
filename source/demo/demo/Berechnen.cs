@@ -13,6 +13,8 @@ namespace demo
     {
         public void Process(string json)
         {
+            string jsonErgebnis;
+
             dynamic obj = json.FromJson();
             switch ((string) obj.cmd)
             {
@@ -23,12 +25,46 @@ namespace demo
                     ergebnis.cmd = "Berechnungsergebnis";
                     ergebnis.payload = new ExpandoObject();
                     ergebnis.payload.resultat = summe;
+                    jsonErgebnis = JsonExtensions.ToJson(ergebnis);
 
-                    json = JsonExtensions.ToJson(ergebnis);
-                    Json_output(json);
+                    Json_output(jsonErgebnis);
+                    break;
+
+                case "Subtrahieren":
+                    var differenz = Subtrahieren(obj.payload.a, obj.payload.b);
+
+                    jsonErgebnis = string.Format(Properties.Resources.json_Berechnungsergebnis, differenz);
+                    Json_output(jsonErgebnis);
+                    break;
+
+                case "Multiplizieren":
+                    int produkt = obj.payload.a * obj.payload.b;
+
+                    jsonErgebnis = new Berechnungsergebnis { payload = new Berechnungsergebnis.Payload { resultat = produkt } }
+                                   .ToJson();
+                    Json_output(jsonErgebnis);
                     break;
             }
         }
+
+
+        int Subtrahieren(int a, int b)
+        {
+            return a - b;
+        }
+
+
+        class Berechnungsergebnis
+        {
+            public string cmd = "Berechnungsergebnis";
+            public Payload payload;
+
+            public class Payload
+            {
+                public int resultat;
+            }
+        }
+
 
         public event Action<string> Json_output;
     }
