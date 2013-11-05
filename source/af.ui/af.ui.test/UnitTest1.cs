@@ -65,6 +65,7 @@ namespace af.ui.test
             jsonObject.cmd = "Starten";
 
             var json = jsonserialization.JsonExtensions.ToJson(jsonObject);
+            Console.WriteLine(json);
             //jsonObject.ToJson();
 
             var ui = new Ui();
