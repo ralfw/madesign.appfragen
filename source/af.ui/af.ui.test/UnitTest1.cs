@@ -11,30 +11,11 @@ namespace af.ui.test
     [TestClass]
     public class UnitTest1
     {
-        public UnitTest1()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //
@@ -64,6 +45,8 @@ namespace af.ui.test
             dynamic jsonObject = new ExpandoObject();
             jsonObject.cmd = "Starten";
 
+            // Json possible after NuGet installation of Microsoft.AspNet.Web.Helpers.Mvc 2.0.20710
+            // System.Web.helpers v1.0.20105.407 is now available in lib-dir.
             var json = jsonserialization.JsonExtensions.ToJson(jsonObject);
             Console.WriteLine(json);
             //jsonObject.ToJson();

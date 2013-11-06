@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using af.contracts;
 using jsonserialization;
 
@@ -33,8 +29,9 @@ namespace af.ui
 
         private void Starten()
         {
+            var app = new App();
             var befragen = new Befragen();
-            befragen.Show();
+            app.Run(befragen);
         }
     }
 }
