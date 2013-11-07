@@ -39,7 +39,7 @@ namespace af.ui.test
         //
         #endregion
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void TestStarten()
         {
             dynamic jsonObject = new ExpandoObject();
