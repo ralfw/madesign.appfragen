@@ -10,3 +10,4 @@ msbuild.exe %srcFolder%\source\demo\demo.sln
 
 
 nunit-console.exe /result:%NUnitResults%\myresults.xml %srcFolder%\source\jsonserialization.tests\bin\Debug\jsonserialization.tests.dll
+vstest.console.exe /logger:trx source\af.ui\af.ui.test\bin\Debug\af.ui.test.dll
