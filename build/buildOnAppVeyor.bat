@@ -9,5 +9,5 @@ msbuild.exe %srcFolder%\source\af.ui\af.ui.sln
 msbuild.exe %srcFolder%\source\demo\demo.sln
 
 
-rem nunit-console.exe /result:%NUnitResults%\myresults.xml %srcFolder%\source\jsonserialization.tests\bin\Debug\jsonserialization.tests.dll
-rem vstest.console.exe /logger:trx source\af.ui\af.ui.test\bin\Debug\af.ui.test.dll
+nunit-console.exe /result:%NUnitResults%\myresults.xml %srcFolder%\source\jsonserialization.tests\bin\Debug\jsonserialization.tests.dll
+vstest.console.exe /logger:trx source\af.ui\af.ui.test\bin\Debug\af.ui.test.dll
