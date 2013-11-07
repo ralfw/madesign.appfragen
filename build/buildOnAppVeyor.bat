@@ -7,3 +7,6 @@ msbuild.exe %srcFolder%\source\af.modul.befragen\af.module.befragen.sln
 msbuild.exe %srcFolder%\source\af.ui\af.ui.sln
 
 msbuild.exe %srcFolder%\source\demo\demo.sln
+
+
+nunit-console.exe /result:%NUnitResults%\myresults.xml %srcFolder%\source\jsonserialization.tests\bin\Debug\jsonserialization.tests.dll
