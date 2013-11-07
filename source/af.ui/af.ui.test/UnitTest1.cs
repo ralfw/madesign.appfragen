@@ -45,8 +45,8 @@ namespace af.ui.test
             dynamic jsonObject = new ExpandoObject();
             jsonObject.cmd = "Starten";
 
-            // Json possible after NuGet installation of Microsoft.AspNet.Web.Helpers.Mvc 2.0.20710
-            // System.Web.helpers v1.0.20105.407 is now available in lib-dir.
+            // Json functionality available after NuGet installation and deinstallation of Microsoft.AspNet.Web.Helpers.Mvc 2.0.20710
+            // System.Web.helpers v1.0.20105.407 is now available in lib-dir - but also not needed as reference.
             var json = jsonserialization.JsonExtensions.ToJson(jsonObject);
             Console.WriteLine(json);
             //jsonObject.ToJson();
