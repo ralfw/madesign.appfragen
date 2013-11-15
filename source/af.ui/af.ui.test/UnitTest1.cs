@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
+using af.contracts;
 using af.ui;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -42,17 +44,96 @@ namespace af.ui.test
         [TestMethod, Ignore]
         public void TestStarten()
         {
-            dynamic jsonObject = new ExpandoObject();
-            jsonObject.cmd = "Starten";
+            dynamic expandoObject = new ExpandoObject();
+            expandoObject.cmd = "Starten";
 
             // Json functionality available after NuGet installation and deinstallation of Microsoft.AspNet.Web.Helpers.Mvc 2.0.20710
             // System.Web.helpers v1.0.20105.407 is now available in lib-dir - but also not needed as reference.
-            var json = jsonserialization.JsonExtensions.ToJson(jsonObject);
+            var json = jsonserialization.JsonExtensions.ToJson(expandoObject);
             Console.WriteLine(json);
             //jsonObject.ToJson();
 
             var ui = new Ui();
             ui.Process(json);
+        }
+
+        [TestMethod, Ignore]
+        public void TestFragebogenAnzeigen()
+        {
+            dynamic expandoObject = new ExpandoObject();
+            expandoObject.cmd = "Fragebogen anzeigen";
+            
+            var befragung = new Befragung();
+            befragung.Reset();
+            befragung.Fragen.Add(
+                new Befragung.Frage
+                    {
+                        Text = "Was ist kein Säugetier?",
+                        Antwortmöglichkeiten = new List<Befragung.Antwortmöglichkeit>
+                            {
+                                new Befragung.Antwortmöglichkeit
+                                    {
+                                        Id = "F1A1",
+                                        Text = "Hund"
+                                    },
+                                new Befragung.Antwortmöglichkeit
+                                    {
+                                        Id = "F1A2",
+                                        Text = "Katze"
+                                    },
+                                new Befragung.Antwortmöglichkeit
+                                    {
+                                        Id = "F1A3",
+                                        Text = "Fisch",
+                                        IstRichtigeAntwort = true
+                                    },
+                                new Befragung.Antwortmöglichkeit
+                                    {
+                                        Id = "F1A4",
+                                        Text = "Weiß nicht"
+                                    },
+                            }
+                    });
+
+            expandoObject.payload = new ExpandoObject();
+            expandoObject.payload.Fragen = new List<ExpandoObject>();
+            dynamic frage = new ExpandoObject();
+            frage.Text = "Was ist kein Säugetier?";
+            //frage.Antwortmöglichkeiten = new List<ExpandoObject>();
+            //frage.Antwortmöglichkeiten.Add( ErstelleAntwortmöglichkeit("F1A1", "Hund"));
+            //frage.Antwortmöglichkeiten.Add( ErstelleAntwortmöglichkeit( "F1A2", "Katze" ) );
+            //frage.Antwortmöglichkeiten.Add( ErstelleAntwortmöglichkeit( "F1A3", "Fisch" ) );
+            //frage.Antwortmöglichkeiten.Add( ErstelleAntwortmöglichkeit( "F1A4", "Weiß nicht" ) );
+            expandoObject.payload.Fragen.Add( frage );
+
+            //"Fragen": [
+            //    {
+            //        "Text": "<fragetext>",
+            //        "Antwortmoeglichkeiten": [
+            //            {
+            //                "Id": "<id>",
+            //                "Text": "<antwortmoeglichkeitentext>",
+            //                "Ausgewaehlt": true, // oder false
+            //            },
+            //            ...
+            //        ]
+            //    },
+            //    ...
+            //]
+
+            var json = jsonserialization.JsonExtensions.ToJson( expandoObject );
+            var ui = new Ui();
+            ui.Process( json );
+        }
+
+        private ExpandoObject ErstelleAntwortmöglichkeit( string id, string text, bool isAntwort = false )
+        {
+            dynamic ant = new ExpandoObject();
+            ant.Id = id;
+            ant.Text = text;
+            ant.IstRichtigeAntwort = isAntwort;
+
+            return ant;
         }
     }
 }

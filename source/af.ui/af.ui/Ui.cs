@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using af.contracts;
 using jsonserialization;
 
@@ -15,6 +16,7 @@ namespace af.ui
                     Starten();
                     break;
                 case "Fragebogen anzeigen":
+                    FragebogenAnzeigen(jsonObject);
                     break;
                 case "Auswertung anzeigen":
                     break;
@@ -32,6 +34,18 @@ namespace af.ui
             var app = new App();
             var befragen = new Befragen();
             app.Run(befragen);
+        }
+
+        private void FragebogenAnzeigen( dynamic jsonObject )
+        {
+            // Liste an Fragen mit Antwortmöglichkeiten erstellen
+            var fragen = jsonObject.payload.Fragen as List<Befragung.Frage>;
+            // Liste in Befragung setzen
+            var befragen = new Befragen {Fragen = fragen};
+
+            // Befragung anzeigen
+            var app = new App();
+            app.Run( befragen );
         }
     }
 }
