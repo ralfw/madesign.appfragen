@@ -3,16 +3,34 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:ui="clr-namespace:af.ui" xmlns:contracts="clr-namespace:af.contracts;assembly=af.contracts"
+        xmlns:ui="clr-namespace:af.ui"
+        xmlns:contracts="clr-namespace:af.contracts;assembly=af.contracts"
         mc:Ignorable="d" 
         d:DesignHeight="300" d:DesignWidth="400"
         Title="BefragenWindow" Height="350" Width="525">
 
     <Window.Resources>
-        <DataTemplate x:Key="Fragen.Style">
-            <!--DataType="{x:Type contracts:Befragung.Frage}"-->
-            <StackPanel>
-                <TextBlock Text="{Binding Text, StringFormat={}Frage:{0}}"/>
+        <DataTemplate x:Key="Antworten.Style" DataType="{x:Type ui:Befragung+Antwortmöglichkeit}">
+            <StackPanel Background="Bisque">
+                <RadioButton GroupName="TODOTextDerFrage"
+                             IsChecked="{Binding IstAlsAntwortSelektiert}"
+                             Command="{Binding RadioClicked, RelativeSource={RelativeSource AncestorType={x:Type ui:Befragen}}}"
+                             CommandParameter="{Binding Id}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding Text}"/>
+                        <!--TODO: IMPORTANT: remove this later...-->
+                        <TextBlock Text="{Binding IstRichtigeAntwort, StringFormat={}richtig:{0}}"/>
+                    </StackPanel>
+                </RadioButton>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="Fragen.Style" DataType="{x:Type ui:Befragung+Frage}">
+            <StackPanel Background="Aqua">
+                <TextBlock Text="{Binding Text, StringFormat={}Frage:{0}, PresentationTraceSources.TraceLevel=High}"/>
+                <ItemsControl ItemsSource="{Binding Antwortmöglichkeiten}"
+                              ItemTemplate="{StaticResource Antworten.Style}"
+                              Margin="0,0,0,5"/>
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
@@ -20,10 +38,12 @@
     <Grid>
         <Button Content="Öffne Fragenkatalog" HorizontalAlignment="Left" Margin="12,12,0,0" Name="button1" VerticalAlignment="Top" />
 
-        <ItemsControl Margin="50,50,0,0"
-                      ItemsSource="{Binding Fragen, RelativeSource={RelativeSource AncestorType={x:Type ui:Befragen}}}"
-                      ItemTemplate="{StaticResource Fragen.Style}"/>
+        <ScrollViewer Margin="50,50,50,50">
+            <ItemsControl ItemsSource="{Binding Fragen, RelativeSource={RelativeSource AncestorType={x:Type ui:Befragen}}}"
+                          ItemTemplate="{StaticResource Fragen.Style}"/>
+        </ScrollViewer>
         
-        <Button Content="Auswerten" HorizontalAlignment="Left" Margin="194,261,0,0" Name="button2" VerticalAlignment="Top"/>
+        
+        <Button Content="Auswerten" HorizontalAlignment="Left" Margin="391,277,0,0" Name="button2" VerticalAlignment="Top"/>
     </Grid>
 </Window>

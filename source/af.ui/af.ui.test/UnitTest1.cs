@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
-using af.contracts;
-using af.ui;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace af.ui.test
@@ -58,7 +56,7 @@ namespace af.ui.test
         }
 
         [TestMethod, Ignore]
-        public void TestFragebogenAnzeigen()
+        public void TestFragebogenDatenSenden()
         {
             dynamic model = new ExpandoObject();
             model.Data = "asdf";
@@ -144,6 +142,19 @@ namespace af.ui.test
             Assert.IsNotNull(testJsonObject.Fragen[0].Text, "Fragen[0].Text darf nicht null sein");
             Assert.Fail();
             Assert.AreEqual("Was ist kein Säugetier?", testJsonObject.payload.Fragen[0].Text);
+            var ui = new Ui();
+            ui.Process(json);
+        }
+
+        [TestMethod, Ignore]
+        public void TestFragebogenAnzeigen()
+        {
+            dynamic expandoObject = new ExpandoObject();
+            expandoObject.cmd = "Fragebogen anzeigen";
+            expandoObject.payload = "Bau dir selber 'nen Fragebogen";
+
+            var json = jsonserialization.JsonExtensions.ToJson(expandoObject);
+
             var ui = new Ui();
             ui.Process(json);
         }
