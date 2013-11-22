@@ -16,7 +16,7 @@ namespace af.ui
             InitializeComponent();
         }
 
-        private Ui _ui;
+        private readonly Ui _ui;
 
         public Befragen(Ui ui)
         {
@@ -38,7 +38,7 @@ namespace af.ui
         {
             get
             {
-                return _radioClicked ?? (_radioClicked = new RelayCommand(param => _ui.SendCommand((string)param)));
+                return _radioClicked ?? ( _radioClicked = new RelayCommand( param => _ui.SendCommand( "Beantworten", (string) param ) ) );
             }
         }
 

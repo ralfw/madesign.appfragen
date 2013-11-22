@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using af.contracts;
 using jsonserialization;
 
@@ -7,6 +8,11 @@ namespace af.ui
 {
     public class Ui : IComponent
     {
+        public const string Beantworten = "Beantworten";
+        public const string Auswerten = "Auswerten";
+        public const string FragenkatalogLaden = "Fragenkatalog laden";
+        public const string AuswertungBeenden = "Auswertung beenden";
+
         public void Process(string json)
         {
             dynamic jsonObject = json.FromJson();
@@ -38,23 +44,41 @@ namespace af.ui
             app.Run(befragen);
         }
 
-        public void SendCommand(string param)
+        public void SendCommand(string command, string param)
         {
-            if (Json_output != null)
+            dynamic jsonObject = new ExpandoObject();
+
+            switch(command)
             {
-                Json_output(param);
+                case Beantworten:
+                    jsonObject.cmd = Beantworten;
+                    jsonObject.payload = new ExpandoObject();
+                    jsonObject.payload.AntwortmoeglichkeitId = param;
+                    break;
+                case Auswerten:
+                    jsonObject.cmd = Auswerten;
+                    break;
+                case FragenkatalogLaden:
+                    jsonObject.cmd = FragenkatalogLaden;
+                    jsonObject.payload = new ExpandoObject();
+                    jsonObject.payload.Dateiname = param;
+                    break;
+                case AuswertungBeenden:
+                    jsonObject.cmd = AuswertungBeenden;
+                    break;
+            }
+
+            if ( Json_output != null )
+            {
+                var json = JsonExtensions.ToJson( jsonObject );
+                Json_output( json );
             }
         }
 
         private void FragebogenAnzeigen( dynamic jsonObject )
         {
-            // Liste an Fragen mit Antwortmöglichkeiten erstellen
-            //var fragen = jsonObject.payload.Fragen as List<Befragung.Frage>;
-
-            // TODO: Wir bauen uns erstmal ne dummy Liste, bis das json funktioniert.
-            var fragen = new List<Befragung.Frage>();
-            fragen.Add(FrageErstellen("1", 3));
-            fragen.Add(FrageErstellen("2", 2));
+            // Liste an Fragen mit Antwortmöglichkeiten aus jsonObject holen
+            var fragen = GetFragen(jsonObject);
 
             // Liste in Befragung setzen
             var befragen = new Befragen(this) {Fragen = fragen};
@@ -64,54 +88,29 @@ namespace af.ui
             app.Run( befragen );
         }
 
-        /// <summary>
-        /// TODO: Test method - remove later
-        /// </summary>
-        /// <param name="nummer"></param>
-        /// <param name="nummerDerRichtigenAntwort">1-3</param>
-        /// <returns>Gibt eine Frage mit Antwortmöglichkeiten zurück</returns>
-        private Befragung.Frage FrageErstellen(string nummer, int nummerDerRichtigenAntwort)
+        private List<Befragung.Frage> GetFragen(dynamic jsonObject)
         {
-            if (nummerDerRichtigenAntwort < 1 || nummerDerRichtigenAntwort > 3)
+            var fragen = new List<Befragung.Frage>();
+            foreach (var currentFrage in jsonObject.payload.Fragen)
             {
-                nummerDerRichtigenAntwort = 1;
-            }
-            var frage = new Befragung.Frage
+                var frage = new Befragung.Frage
+                                {
+                                    Text = currentFrage.Text,
+                                    Antwortmöglichkeiten = new List<Befragung.Antwortmöglichkeit>()
+                                };
+                foreach ( var currentAntwortmöglichkeit in currentFrage.Antwortmöglichkeiten )
                 {
-                    Text = "Frage Nr. " + nummer,
-                    Antwortmöglichkeiten = new List<Befragung.Antwortmöglichkeit>
-                        {
-                            new Befragung.Antwortmöglichkeit
-                                {
-                                    Id = "F" + nummer + "A1",
-                                    IstAlsAntwortSelektiert = false,
-                                    IstRichtigeAntwort = nummerDerRichtigenAntwort == 1,
-                                    Text = "Antwortmöglichkeit 1"
-                                },
-                            new Befragung.Antwortmöglichkeit
-                                {
-                                    Id = "F" + nummer + "A2",
-                                    IstAlsAntwortSelektiert = false,
-                                    IstRichtigeAntwort = nummerDerRichtigenAntwort == 2,
-                                    Text = "Antwortmöglichkeit 2"
-                                },
-                            new Befragung.Antwortmöglichkeit
-                                {
-                                    Id = "F" + nummer + "A3",
-                                    IstAlsAntwortSelektiert = false,
-                                    IstRichtigeAntwort = nummerDerRichtigenAntwort == 3,
-                                    Text = "Antwortmöglichkeit 3"
-                                },
-                            new Befragung.Antwortmöglichkeit
-                                {
-                                    Id = "F" + nummer + "A4",
-                                    IstAlsAntwortSelektiert = false,
-                                    IstRichtigeAntwort = false,
-                                    Text = "Antwortmöglichkeit weiß nicht"
-                                },
-                        }
-                };
-            return frage;
+                    var antwortmöglichkeit = new Befragung.Antwortmöglichkeit();
+                    antwortmöglichkeit.Id = currentAntwortmöglichkeit.Id;
+                    antwortmöglichkeit.Text = currentAntwortmöglichkeit.Text;
+                    antwortmöglichkeit.IstAlsAntwortSelektiert = currentAntwortmöglichkeit.IstAlsAntwortSelektiert;
+                    antwortmöglichkeit.IstRichtigeAntwort = currentAntwortmöglichkeit.IstRichtigeAntwort;
+                    frage.Antwortmöglichkeiten.Add(antwortmöglichkeit);
+                }
+                fragen.Add(frage);
+            }
+
+            return fragen;
         }
 
         private void AuswertungAnzeigen( dynamic jsonObject )
