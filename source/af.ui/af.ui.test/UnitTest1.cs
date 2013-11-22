@@ -117,8 +117,8 @@ namespace af.ui.test
 
             expandoObject.payload = new ExpandoObject();
 
-            List<dynamic> frageListe = new List<dynamic>();
-            dynamic frage = new ExpandoObject();
+            List<Befragung.Frage> frageListe = new List<Befragung.Frage>();
+            var frage = new Befragung.Frage();
             frage.Text = "Was ist kein Säugetier?";
             //frage.Antwortmöglichkeiten = new List<ExpandoObject>();
             //frage.Antwortmöglichkeiten.Add( ErstelleAntwortmöglichkeit("F1A1", "Hund"));
@@ -131,17 +131,20 @@ namespace af.ui.test
             Console.WriteLine(expandoObject.Fragen[0].Text);
 
             var json = jsonserialization.JsonExtensions.ToJson(expandoObject);
-            var testJsonObject = jsonserialization.JsonExtensions.FromJson(json);
+            dynamic testJsonObject = jsonserialization.JsonExtensions.FromJson(json);
             Assert.AreEqual("Fragebogen anzeigen", testJsonObject.cmd);
             Console.WriteLine(testJsonObject.cmd);
             Assert.IsNotNull(testJsonObject);
             Assert.IsNotNull(testJsonObject.Fragen);
-            Console.WriteLine(testJsonObject.Fragen[0].Text);
             Assert.IsNotNull(testJsonObject.Fragen[0], "Fragen[0] darf nicht null sein");
-            Assert.AreEqual("Was ist kein Säugetier?", testJsonObject.Fragen[0].Text);
+
+            dynamic f = testJsonObject.Fragen[0];
+            Assert.AreEqual( "Was ist kein Säugetier?", f.Text, "Text aus der ersten Frage als dynamic gecastet darf nicht null sein." );
+
+            Console.WriteLine( testJsonObject.Fragen[0].Text );
+            Assert.AreEqual( "Was ist kein Säugetier?", testJsonObject.Fragen[0].Text );
             Assert.IsNotNull(testJsonObject.Fragen[0].Text, "Fragen[0].Text darf nicht null sein");
-            Assert.Fail();
-            Assert.AreEqual("Was ist kein Säugetier?", testJsonObject.payload.Fragen[0].Text);
+            //Assert.AreEqual("Was ist kein Säugetier?", testJsonObject.payload.Fragen[0].Text);
             var ui = new Ui();
             ui.Process(json);
         }
@@ -167,6 +170,19 @@ namespace af.ui.test
             ant.IstRichtigeAntwort = isAntwort;
 
             return ant;
+        }
+
+        [TestMethod, Ignore]
+        public void TestAuswertungAnzeigen()
+        {
+            dynamic expandoObject = new ExpandoObject();
+            expandoObject.cmd = "Auswertung anzeigen";
+            expandoObject.payload = "Bau dir selber 'ne Auswertung";
+
+            var json = jsonserialization.JsonExtensions.ToJson( expandoObject );
+
+            var ui = new Ui();
+            ui.Process( json );
         }
     }
 }

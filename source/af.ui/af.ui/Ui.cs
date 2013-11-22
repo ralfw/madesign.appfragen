@@ -19,6 +19,7 @@ namespace af.ui
                     FragebogenAnzeigen(jsonObject);
                     break;
                 case "Auswertung anzeigen":
+                    AuswertungAnzeigen(jsonObject);
                     break;
                 case "Auswertung schliessen":
                     break;
@@ -112,5 +113,13 @@ namespace af.ui
                 };
             return frage;
         }
+
+        private void AuswertungAnzeigen( dynamic jsonObject )
+        {
+            var auswertung = new Auswertung();
+            var app = new App();
+            app.Run( auswertung );
+        }
+
     }
 }
