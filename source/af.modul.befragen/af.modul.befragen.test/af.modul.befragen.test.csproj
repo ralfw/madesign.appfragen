@@ -36,9 +36,6 @@
     <Reference Include="af.contracts">
       <HintPath>..\..\..\bin.contracts\af.contracts.dll</HintPath>
     </Reference>
-    <Reference Include="af.modul.befragen">
-      <HintPath>..\..\..\bin\af.modul.befragen.dll</HintPath>
-    </Reference>
     <Reference Include="jsonserialization">
       <HintPath>..\..\..\lib\jsonserialization.dll</HintPath>
     </Reference>
@@ -81,6 +78,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\af.modul.befragen\af.modul.befragen.csproj">
+      <Project>{9AD889A7-C59D-44A2-AB81-47416564900D}</Project>
+      <Name>af.modul.befragen</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

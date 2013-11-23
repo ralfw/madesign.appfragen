@@ -24,16 +24,32 @@ namespace af.modul.befragen
             switch ((string)input.cmd)
             {
                 case "Fragenkatalog laden":
+                    // Reset questionaire
+                    _befragung.Reset(); // Creates list empty list of answers!
                     var dateiname = (string)input.payload.Dateiname;
-                    // Öffne Datei TODO: öffne Datei
-                    // Lese zeilenweise
-                    // Liste von Fragen und Antwortmöglichkeiten in einen Fragebogen wandeln.
-                    // Resette Befragung
-                    _befragung.Reset(); // Erzeugt neue Antwortliste!   
-                    // Erzeuge Fragebogen aus Fragekatalog, als Text der ersten Frage für den Durchstich nur der Dateiname zurück
-                    _befragung.Fragen.Add(new Befragung.Frage { Text = dateiname });
+                    // Open questionaire catalog file
+                    var prefix = @"..\..\..\..\..\bin\Properties\";
+                    try
+                    {
+                        using (StreamReader fileStreamReader = new StreamReader(prefix + dateiname))
+                        {
+                            while (fileStreamReader.Peek() >= 0)
+                            {
+                                var line = fileStreamReader.ReadLine();
+                                if (line.EndsWith("?"))
+                                {
+                                    var frage = new Befragung.Frage() { Text = line };
+                                    _befragung.Fragen.Add(frage);
+                                }
+                            }
+                        }
+                    }
+                    catch (FileNotFoundException fileNotFoundException)
+                    {
+                        Console.WriteLine("{0}", fileNotFoundException);
+                    }
                     // Schicke Fragebogen
-                    Json_output(_befragung.ToJson());
+                    Json_output.Invoke(_befragung.ToJson());
                     break;
             }
         }
