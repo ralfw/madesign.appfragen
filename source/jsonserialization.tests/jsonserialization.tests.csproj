@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JsonFx">
+      <HintPath>..\jsonserialization\packages\JsonFx.2.0.1209.2802\lib\net40\JsonFx.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\jsonserialization\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
