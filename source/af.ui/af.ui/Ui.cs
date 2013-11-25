@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Dynamic;
 using af.contracts;
 using jsonserialization;
@@ -115,7 +116,29 @@ namespace af.ui
 
         private void AuswertungAnzeigen( dynamic jsonObject )
         {
-            var auswertung = new Auswertung();
+            var classes = new ObservableCollection<Category>
+                              {
+                                  new Category
+                                      {
+                                          Class = "richtig",
+                                          Anzahl = jsonObject.payload.AnzahlRichtig,
+                                          AnzahlProzent = jsonObject.payload.ProzentRichtig
+                                      },
+                                  new Category
+                                      {
+                                          Class = "falsch",
+                                          Anzahl = jsonObject.payload.AnzahlFalsch,
+                                          AnzahlProzent = jsonObject.payload.ProzentFalsch
+                                      },
+                                  new Category
+                                      {
+                                          Class = "weiß nicht",
+                                          Anzahl = jsonObject.payload.AnzahlWeissNicht,
+                                          AnzahlProzent = jsonObject.payload.ProzentWeissNicht
+                                      }
+                              };
+
+            var auswertung = new Auswertung(classes);
             var app = new App();
             app.Run( auswertung );
         }

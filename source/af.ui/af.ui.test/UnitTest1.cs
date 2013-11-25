@@ -109,7 +109,14 @@ namespace af.ui.test
         {
             dynamic expandoObject = new ExpandoObject();
             expandoObject.cmd = "Auswertung anzeigen";
-            expandoObject.payload = "Bau dir selber 'ne Auswertung";
+            expandoObject.payload = new ExpandoObject();
+            expandoObject.payload.AnzahlFragen = 10;
+            expandoObject.payload.AnzahlRichtig = 3;
+            expandoObject.payload.ProzentRichtig = 0.3;
+            expandoObject.payload.AnzahlFalsch = 1;
+            expandoObject.payload.ProzentFalsch = 0.1;
+            expandoObject.payload.AnzahlWeissNicht = 6;
+            expandoObject.payload.ProzentWeissNicht = 0.6;
 
             var json = JsonExtensions.ToJson( expandoObject );
 
