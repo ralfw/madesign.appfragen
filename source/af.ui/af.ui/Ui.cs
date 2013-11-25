@@ -88,19 +88,19 @@ namespace af.ui
             app.Run( befragen );
         }
 
-        private List<Befragung.Frage> GetFragen(dynamic jsonObject)
+        private List<UiBefragung.Frage> GetFragen(dynamic jsonObject)
         {
-            var fragen = new List<Befragung.Frage>();
+            var fragen = new List<UiBefragung.Frage>();
             foreach (var currentFrage in jsonObject.payload.Fragen)
             {
-                var frage = new Befragung.Frage
+                var frage = new UiBefragung.Frage
                                 {
                                     Text = currentFrage.Text,
-                                    Antwortmöglichkeiten = new List<Befragung.Antwortmöglichkeit>()
+                                    Antwortmöglichkeiten = new List<UiBefragung.Antwortmöglichkeit>()
                                 };
                 foreach ( var currentAntwortmöglichkeit in currentFrage.Antwortmöglichkeiten )
                 {
-                    var antwortmöglichkeit = new Befragung.Antwortmöglichkeit();
+                    var antwortmöglichkeit = new UiBefragung.Antwortmöglichkeit();
                     antwortmöglichkeit.Id = currentAntwortmöglichkeit.Id;
                     antwortmöglichkeit.Text = currentAntwortmöglichkeit.Text;
                     antwortmöglichkeit.IstAlsAntwortSelektiert = currentAntwortmöglichkeit.IstAlsAntwortSelektiert;

@@ -2,20 +2,20 @@
 
 namespace af.ui
 {
-    public class Befragung
+    public class UiBefragung
     {
         public string Dateiname { get; set; }
-        public List<Befragung.Frage> Fragen { get; set; }
+        public List<Frage> Fragen { get; set; }
 
         public void Reset()
         {
-            Fragen = new List<Befragung.Frage>();
+            Fragen = new List<Frage>();
         }
 
         public class Frage
         {
             public string Text { get; set; }
-            public List<Befragung.Antwortmöglichkeit> Antwortmöglichkeiten { get; set; }
+            public List<Antwortmöglichkeit> Antwortmöglichkeiten { get; set; }
         }
 
         public class Antwortmöglichkeit

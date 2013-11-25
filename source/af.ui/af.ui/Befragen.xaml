@@ -4,13 +4,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:ui="clr-namespace:af.ui"
-        xmlns:contracts="clr-namespace:af.contracts;assembly=af.contracts"
         mc:Ignorable="d" 
         d:DesignHeight="300" d:DesignWidth="400"
         Title="BefragenWindow" Height="350" Width="525">
 
     <Window.Resources>
-        <DataTemplate x:Key="Antworten.Style" DataType="{x:Type ui:Befragung+Antwortmöglichkeit}">
+        <DataTemplate x:Key="Antworten.Style" DataType="{x:Type ui:UiBefragung+Antwortmöglichkeit}">
             <StackPanel Background="Bisque">
                 <RadioButton IsChecked="{Binding IstAlsAntwortSelektiert}"
                              Command="{Binding RadioClicked, RelativeSource={RelativeSource AncestorType={x:Type ui:Befragen}}}"
@@ -24,7 +23,7 @@
             </StackPanel>
         </DataTemplate>
 
-        <DataTemplate x:Key="Fragen.Style" DataType="{x:Type ui:Befragung+Frage}">
+        <DataTemplate x:Key="Fragen.Style" DataType="{x:Type ui:UiBefragung+Frage}">
             <StackPanel Background="Aqua">
                 <TextBlock Text="{Binding Text, StringFormat={}Frage: {0}}"/>
                 <ItemsControl ItemsSource="{Binding Antwortmöglichkeiten}"

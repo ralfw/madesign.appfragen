@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Input;
-using af.contracts;
 
 namespace af.ui
 {
@@ -24,15 +22,15 @@ namespace af.ui
             InitializeComponent();
         }
 
-        public List<Befragung.Frage> Fragen
+        public List<UiBefragung.Frage> Fragen
         {
-            get { return (List<Befragung.Frage>) GetValue( FragenProperty ); }
+            get { return (List<UiBefragung.Frage>) GetValue( FragenProperty ); }
             set { SetValue( FragenProperty, value ); }
         }
 
         // Using a DependencyProperty as the backing store for Fragen.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FragenProperty =
-            DependencyProperty.Register("Fragen", typeof(List<Befragung.Frage>), typeof(Befragen), new UIPropertyMetadata(null));
+            DependencyProperty.Register("Fragen", typeof(List<UiBefragung.Frage>), typeof(Befragen), new UIPropertyMetadata(null));
 
         public ICommand RadioClicked
         {

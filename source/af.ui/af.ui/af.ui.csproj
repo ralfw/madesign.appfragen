@@ -35,6 +35,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin.contracts\af.contracts.dll</HintPath>
     </Reference>
+    <Reference Include="af.pieChart, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\lib\af.pieChart.dll</HintPath>
+    </Reference>
     <Reference Include="jsonserialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\jsonserialization.dll</HintPath>
@@ -61,7 +64,7 @@
     <Compile Include="Befragen.xaml.cs">
       <DependentUpon>Befragen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Befragung.cs" />
+    <Compile Include="UiBefragung.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Ui.cs" />
@@ -80,12 +83,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\af.pieChart\af.pieChart.csproj">
-      <Project>{0CDE3517-C3CF-4283-A227-2924D80E00C6}</Project>
-      <Name>af.pieChart</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -48,7 +48,7 @@ namespace af.ui.test
 
             // Json functionality available after NuGet installation and deinstallation of Microsoft.AspNet.Web.Helpers.Mvc 2.0.20710
             // System.Web.helpers v1.0.20105.407 is now available in lib-dir - but also not needed as reference.
-            var json = jsonserialization.JsonExtensions.ToJson(expandoObject);
+            var json = JsonExtensions.ToJson(expandoObject);
             Console.WriteLine(json);
             //jsonObject.ToJson();
 
@@ -97,7 +97,7 @@ namespace af.ui.test
             var json = JsonExtensions.ToJson(expandoObject);
             var ui = new Ui();
             var uiOutput = string.Empty;
-            ui.Json_output += jsonOutput => uiOutput = jsonOutput; ;
+            ui.Json_output += jsonOutput => uiOutput = jsonOutput;
             ui.Process(json);
 
             dynamic result = uiOutput.FromJson();
@@ -117,13 +117,13 @@ namespace af.ui.test
             ui.Process( json );
         }
 
-        private List<Befragung.Frage> FrageListeErstellen()
+        private List<UiBefragung.Frage> FrageListeErstellen()
         {
-            var frageListe = new List<Befragung.Frage>();
-            var frage = new Befragung.Frage
+            var frageListe = new List<UiBefragung.Frage>();
+            var frage = new UiBefragung.Frage
                             {
                                 Text = "Was ist kein Säugetier?",
-                                Antwortmöglichkeiten = new List<Befragung.Antwortmöglichkeit>
+                                Antwortmöglichkeiten = new List<UiBefragung.Antwortmöglichkeit>
                                                            {
                                                                ErstelleAntwortmöglichkeit("F1A1", "Hund"),
                                                                ErstelleAntwortmöglichkeit("F1A2", "Katze"),
@@ -133,10 +133,10 @@ namespace af.ui.test
                             };
             frageListe.Add( frage );
 
-            var frage2 = new Befragung.Frage
+            var frage2 = new UiBefragung.Frage
                              {
                                  Text = "Was ist 2+3?",
-                                 Antwortmöglichkeiten = new List<Befragung.Antwortmöglichkeit>
+                                 Antwortmöglichkeiten = new List<UiBefragung.Antwortmöglichkeit>
                                                             {
                                                                 ErstelleAntwortmöglichkeit("F2A1", "3"),
                                                                 ErstelleAntwortmöglichkeit("F2A2", "5", true),
@@ -158,39 +158,39 @@ namespace af.ui.test
         /// <param name="nummer"></param>
         /// <param name="nummerDerRichtigenAntwort">1-3</param>
         /// <returns>Gibt eine Frage mit Antwortmöglichkeiten zurück</returns>
-        private Befragung.Frage FrageErstellen( string nummer, int nummerDerRichtigenAntwort )
+        private UiBefragung.Frage FrageErstellen( string nummer, int nummerDerRichtigenAntwort )
         {
             if ( nummerDerRichtigenAntwort < 1 || nummerDerRichtigenAntwort > 3 )
             {
                 nummerDerRichtigenAntwort = 1;
             }
-            var frage = new Befragung.Frage
+            var frage = new UiBefragung.Frage
             {
                 Text = "Frage Nr. " + nummer,
-                Antwortmöglichkeiten = new List<Befragung.Antwortmöglichkeit>
+                Antwortmöglichkeiten = new List<UiBefragung.Antwortmöglichkeit>
                         {
-                            new Befragung.Antwortmöglichkeit
+                            new UiBefragung.Antwortmöglichkeit
                                 {
                                     Id = "F" + nummer + "A1",
                                     IstAlsAntwortSelektiert = false,
                                     IstRichtigeAntwort = nummerDerRichtigenAntwort == 1,
                                     Text = "Antwortmöglichkeit 1"
                                 },
-                            new Befragung.Antwortmöglichkeit
+                            new UiBefragung.Antwortmöglichkeit
                                 {
                                     Id = "F" + nummer + "A2",
                                     IstAlsAntwortSelektiert = false,
                                     IstRichtigeAntwort = nummerDerRichtigenAntwort == 2,
                                     Text = "Antwortmöglichkeit 2"
                                 },
-                            new Befragung.Antwortmöglichkeit
+                            new UiBefragung.Antwortmöglichkeit
                                 {
                                     Id = "F" + nummer + "A3",
                                     IstAlsAntwortSelektiert = false,
                                     IstRichtigeAntwort = nummerDerRichtigenAntwort == 3,
                                     Text = "Antwortmöglichkeit 3"
                                 },
-                            new Befragung.Antwortmöglichkeit
+                            new UiBefragung.Antwortmöglichkeit
                                 {
                                     Id = "F" + nummer + "A4",
                                     IstAlsAntwortSelektiert = false,
@@ -202,9 +202,9 @@ namespace af.ui.test
             return frage;
         }
 
-        private Befragung.Antwortmöglichkeit ErstelleAntwortmöglichkeit( string id, string text, bool istRichtigeAntwort = false )
+        private UiBefragung.Antwortmöglichkeit ErstelleAntwortmöglichkeit( string id, string text, bool istRichtigeAntwort = false )
         {
-            var ant = new Befragung.Antwortmöglichkeit
+            var ant = new UiBefragung.Antwortmöglichkeit
                           {
                               Id = id,
                               Text = text,
