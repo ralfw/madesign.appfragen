@@ -34,7 +34,8 @@
     </Window.Resources>
     
     <Grid>
-        <Button Content="Öffne Fragenkatalog" HorizontalAlignment="Left" Margin="12,12,0,0" Name="button1" VerticalAlignment="Top" />
+        <Button Content="Öffne Fragenkatalog" HorizontalAlignment="Left" Margin="12,12,0,0" Name="ladenButton" VerticalAlignment="Top"
+                Command="{Binding LadeFragenkatalogClicked, RelativeSource={RelativeSource AncestorType={x:Type ui:Befragen}}}"/>
 
         <ScrollViewer Margin="50,50,50,50">
             <ItemsControl ItemsSource="{Binding Fragen, RelativeSource={RelativeSource AncestorType={x:Type ui:Befragen}}}"
@@ -42,6 +43,7 @@
         </ScrollViewer>
         
         
-        <Button Content="Auswerten" HorizontalAlignment="Left" Margin="391,277,0,0" Name="button2" VerticalAlignment="Top"/>
+        <Button Content="Auswerten" HorizontalAlignment="Left" Margin="391,277,0,0" Name="auswertenButton" VerticalAlignment="Top"
+                Command="{Binding AuswertungAnzeigenClicked, RelativeSource={RelativeSource AncestorType={x:Type ui:Befragen}}}"/>
     </Grid>
 </Window>

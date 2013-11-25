@@ -36,10 +36,38 @@ namespace af.ui
         {
             get
             {
-                return _radioClicked ?? ( _radioClicked = new RelayCommand( param => _ui.SendCommand( "Beantworten", (string) param ) ) );
+                return _radioClicked ?? ( _radioClicked = new RelayCommand( param => _ui.SendCommand( Ui.Beantworten, (string) param ) ) );
             }
         }
 
         private ICommand _radioClicked;
+
+        public ICommand AuswertungAnzeigenClicked
+        {
+            get
+            {
+                return _auswertungAnzeigenClicked ?? ( _auswertungAnzeigenClicked = new RelayCommand( param => _ui.SendCommand( Ui.Auswerten, "" ) ) );
+            }
+        }
+
+        private ICommand _auswertungAnzeigenClicked;
+
+        public ICommand LadeFragenkatalogClicked
+        {
+            get
+            {
+                return _ladeFragenkatalogClicked ?? ( _ladeFragenkatalogClicked = new RelayCommand( param =>
+                    {
+                        // TODO: öffne OpenDialog
+                        // nehme Ergebnis und sende es
+                        var zuÖffnendeDatei = "Pisa.txt";
+                        _ui.SendCommand( Ui.FragenkatalogLaden, zuÖffnendeDatei );
+                    } ) );
+            }
+        }
+
+        private ICommand _ladeFragenkatalogClicked;
+
+        
     }
 }
