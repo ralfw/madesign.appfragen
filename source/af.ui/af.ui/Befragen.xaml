@@ -14,10 +14,10 @@
                 <RadioButton IsChecked="{Binding IstAlsAntwortSelektiert}"
                              Command="{Binding RadioClicked, RelativeSource={RelativeSource AncestorType={x:Type ui:Befragen}}}"
                              CommandParameter="{Binding Id}">
-                    <StackPanel>
+                    <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Text}"/>
                         <!--TODO: IMPORTANT: remove this later...-->
-                        <TextBlock Text="{Binding IstRichtigeAntwort, StringFormat={}richtig:{0}}"/>
+                        <TextBlock Text="{Binding IstRichtigeAntwort, StringFormat={}richtig:{0}}" Margin="10,0,0,0" Foreground="Gray"/>
                     </StackPanel>
                 </RadioButton>
             </StackPanel>

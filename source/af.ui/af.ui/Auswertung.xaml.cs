@@ -8,10 +8,20 @@ namespace af.ui
     /// </summary>
     public partial class Auswertung : Window
     {
-        public Auswertung(ObservableCollection<Category> classes)
+        private readonly Ui _ui;
+
+        public Auswertung(Ui ui)
         {
             InitializeComponent();
 
+            _ui = ui;
+        }
+
+        public Auswertung(Ui ui, ObservableCollection<Category> classes)
+        {
+            InitializeComponent();
+
+            _ui = ui;
             DataContext = classes;
         }
     }

@@ -14,6 +14,11 @@ namespace af.ui
         public const string FragenkatalogLaden = "Fragenkatalog laden";
         public const string AuswertungBeenden = "Auswertung beenden";
 
+        public Ui()
+        {
+            _app = new App();
+        }
+
         public void Process(string json)
         {
             dynamic jsonObject = json.FromJson();
@@ -29,6 +34,7 @@ namespace af.ui
                     AuswertungAnzeigen(jsonObject);
                     break;
                 case "Auswertung schliessen":
+                    AuswertungSchliessen();
                     break;
                 default:
                     Console.WriteLine("Mit dem Kommando kann das UI nichts anfangen.");
@@ -40,9 +46,8 @@ namespace af.ui
 
         private void Starten()
         {
-            var app = new App();
             var befragen = new Befragen(this);
-            app.Run(befragen);
+            _app.Run(befragen);
         }
 
         public void SendCommand(string command, string param)
@@ -82,11 +87,11 @@ namespace af.ui
             var fragen = GetFragen(jsonObject);
 
             // Liste in Befragung setzen
-            var befragen = new Befragen(this) {Fragen = fragen};
+            var befragen = Befragen;
+            befragen.Fragen = fragen;
 
             // Befragung anzeigen
-            var app = new App();
-            app.Run( befragen );
+            _app.Run( befragen );
         }
 
         private List<UiBefragung.Frage> GetFragen(dynamic jsonObject)
@@ -138,10 +143,31 @@ namespace af.ui
                                       }
                               };
 
-            var auswertung = new Auswertung(classes);
-            var app = new App();
-            app.Run( auswertung );
+            var auswertung = Auswertung;
+            auswertung.DataContext = classes;
+            _app.Run( auswertung );
         }
 
+        private void AuswertungSchliessen()
+        {
+            // Close Auswertung
+            _app.Shutdown();
+            _befragen.Fragen = null;
+            _app.Run(Befragen);
+        }
+
+        private App _app;
+
+        private Befragen Befragen
+        {
+            get { return _befragen ?? (_befragen = new Befragen(this)); }
+        }
+        private Befragen _befragen;
+
+        private Auswertung Auswertung
+        {
+            get { return _auswertung ?? ( _auswertung = new Auswertung(this) ); }
+        }
+        private Auswertung _auswertung;
     }
 }

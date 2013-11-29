@@ -63,7 +63,7 @@ namespace af.ui.test
             expandoObject.cmd = "Fragebogen anzeigen";
 
             expandoObject.payload = new ExpandoObject();
-            expandoObject.payload.Fragen = FrageListeErstellen();
+            expandoObject.payload.Fragen = Util.FrageListeErstellen();
 
             Console.WriteLine( expandoObject.payload.Fragen[0].Text );
 
@@ -81,9 +81,6 @@ namespace af.ui.test
             Console.WriteLine( testJsonObject.payload.Fragen[0].Text );
             Assert.AreEqual( "Was ist kein Säugetier?", testJsonObject.payload.Fragen[0].Text );
             Assert.IsNotNull( testJsonObject.payload.Fragen[0].Text, "Fragen[0].Text darf nicht null sein" );
-
-            var ui = new Ui();
-            ui.Process(json);
         }
 
         [TestMethod, Ignore]
@@ -92,7 +89,7 @@ namespace af.ui.test
             dynamic expandoObject = new ExpandoObject();
             expandoObject.cmd = "Fragebogen anzeigen";
             expandoObject.payload = new ExpandoObject();
-            expandoObject.payload.Fragen = FrageListeErstellen();
+            expandoObject.payload.Fragen = Util.FrageListeErstellen();
 
             var json = JsonExtensions.ToJson(expandoObject);
             var ui = new Ui();
@@ -124,101 +121,24 @@ namespace af.ui.test
             ui.Process( json );
         }
 
-        private List<UiBefragung.Frage> FrageListeErstellen()
+        [TestMethod, Ignore]
+        public void TestAuswertungAnzeigenDrückenUndAnzeigen()
         {
-            var frageListe = new List<UiBefragung.Frage>();
-            var frage = new UiBefragung.Frage
-                            {
-                                Text = "Was ist kein Säugetier?",
-                                Antwortmöglichkeiten = new List<UiBefragung.Antwortmöglichkeit>
-                                                           {
-                                                               ErstelleAntwortmöglichkeit("F1A1", "Hund"),
-                                                               ErstelleAntwortmöglichkeit("F1A2", "Katze"),
-                                                               ErstelleAntwortmöglichkeit("F1A3", "Fisch", true),
-                                                               ErstelleAntwortmöglichkeit("F1A4", "Weiß nicht")
-                                                           }
-                            };
-            frageListe.Add( frage );
+            dynamic start = new ExpandoObject();
+            start.cmd = "Starten";
 
-            var frage2 = new UiBefragung.Frage
-                             {
-                                 Text = "Was ist 2+3?",
-                                 Antwortmöglichkeiten = new List<UiBefragung.Antwortmöglichkeit>
-                                                            {
-                                                                ErstelleAntwortmöglichkeit("F2A1", "3"),
-                                                                ErstelleAntwortmöglichkeit("F2A2", "5", true),
-                                                                ErstelleAntwortmöglichkeit("F2A3", "8"),
-                                                                ErstelleAntwortmöglichkeit("F2A4", "Weiß nicht")
-                                                            }
-                             };
-            frageListe.Add( frage2 );
+            var startJson = JsonExtensions.ToJson( start );
+            var ui = new Ui();
+            var uiOutput = string.Empty;
+            ui.Json_output += jsonOutput => uiOutput = jsonOutput;
+            ui.Process( startJson );
 
-            var frage3 = FrageErstellen( "3", 1 );
-            frageListe.Add( frage3 );
-
-            return frageListe;
+            // User muss Button Auswerten drücken
+            dynamic result = uiOutput.FromJson();
+            Assert.AreEqual( "Auswerten", result.cmd, "Dieser Test erwartet das Auswerten gedrückt wurde." );
+            
+            //TODO: Auswertung anzeigen (während das Programm noch läuft).
         }
-
-        /// <summary>
-        /// Erstellt eine Frage mit defaultText und 4 default Antwortmöglichkeiten.
-        /// </summary>
-        /// <param name="nummer"></param>
-        /// <param name="nummerDerRichtigenAntwort">1-3</param>
-        /// <returns>Gibt eine Frage mit Antwortmöglichkeiten zurück</returns>
-        private UiBefragung.Frage FrageErstellen( string nummer, int nummerDerRichtigenAntwort )
-        {
-            if ( nummerDerRichtigenAntwort < 1 || nummerDerRichtigenAntwort > 3 )
-            {
-                nummerDerRichtigenAntwort = 1;
-            }
-            var frage = new UiBefragung.Frage
-            {
-                Text = "Frage Nr. " + nummer,
-                Antwortmöglichkeiten = new List<UiBefragung.Antwortmöglichkeit>
-                        {
-                            new UiBefragung.Antwortmöglichkeit
-                                {
-                                    Id = "F" + nummer + "A1",
-                                    IstAlsAntwortSelektiert = false,
-                                    IstRichtigeAntwort = nummerDerRichtigenAntwort == 1,
-                                    Text = "Antwortmöglichkeit 1"
-                                },
-                            new UiBefragung.Antwortmöglichkeit
-                                {
-                                    Id = "F" + nummer + "A2",
-                                    IstAlsAntwortSelektiert = false,
-                                    IstRichtigeAntwort = nummerDerRichtigenAntwort == 2,
-                                    Text = "Antwortmöglichkeit 2"
-                                },
-                            new UiBefragung.Antwortmöglichkeit
-                                {
-                                    Id = "F" + nummer + "A3",
-                                    IstAlsAntwortSelektiert = false,
-                                    IstRichtigeAntwort = nummerDerRichtigenAntwort == 3,
-                                    Text = "Antwortmöglichkeit 3"
-                                },
-                            new UiBefragung.Antwortmöglichkeit
-                                {
-                                    Id = "F" + nummer + "A4",
-                                    IstAlsAntwortSelektiert = false,
-                                    IstRichtigeAntwort = false,
-                                    Text = "Antwortmöglichkeit weiß nicht"
-                                },
-                        }
-            };
-            return frage;
-        }
-
-        private UiBefragung.Antwortmöglichkeit ErstelleAntwortmöglichkeit( string id, string text, bool istRichtigeAntwort = false )
-        {
-            var ant = new UiBefragung.Antwortmöglichkeit
-                          {
-                              Id = id,
-                              Text = text,
-                              IstRichtigeAntwort = istRichtigeAntwort
-                          };
-
-            return ant;
-        }
+        
     }
 }
