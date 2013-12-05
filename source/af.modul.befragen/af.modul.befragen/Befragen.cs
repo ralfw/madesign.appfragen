@@ -12,7 +12,7 @@ namespace af.modul.befragen
     public class Befragen : IComponent
     {
         private readonly Befragung _befragung;
-
+        public Befragung.Frage AktuelleFrage;
         public Befragen(Befragung befragung)
         {
             _befragung = befragung;
@@ -33,15 +33,34 @@ namespace af.modul.befragen
                     {
                         using (StreamReader fileStreamReader = new StreamReader(prefix + dateiname))
                         {
+                            var id = 0;
                             while (fileStreamReader.Peek() >= 0)
                             {
                                 var line = fileStreamReader.ReadLine();
                                 if (line.EndsWith("?"))
                                 {
-                                    var frage = new Befragung.Frage() { Text = line };
-                                    _befragung.Fragen.Add(frage);
+                                    if (AktuelleFrage != null)
+                                    { 
+                                        _befragung.Fragen.Add(AktuelleFrage); 
+                                    }
+                                    AktuelleFrage = new Befragung.Frage() { Text = line };
+                                    AktuelleFrage.Antwortmöglichkeiten = new List<Befragung.Antwortmöglichkeit>();
                                 }
+                                else
+                                {
+                                    AktuelleFrage.Antwortmöglichkeiten.Add(
+                                        new Befragung.Antwortmöglichkeit()
+                                        {
+                                            Id = (++id).ToString(),
+                                            IstAlsAntwortSelektiert = false,
+                                            IstRichtigeAntwort = line.EndsWith("*"),
+                                            Text = line.Replace("*", string.Empty)
+                                        }
+                                        );
+                                }
+
                             }
+                            _befragung.Fragen.Add(AktuelleFrage);
                         }
                     }
                     catch (FileNotFoundException fileNotFoundException)

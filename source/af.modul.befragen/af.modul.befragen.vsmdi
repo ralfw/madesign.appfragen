@@ -3,4 +3,9 @@
   <TestList name="Testlisten" id="8c43106b-9dc1-4907-a29f-aa66a61bf5b6">
     <RunConfiguration id="ca0608bf-5455-4ea6-8b3e-2fcd644e0f13" name="Lokal" storage="local.testsettings" type="Microsoft.VisualStudio.TestTools.Common.TestRunConfiguration, Microsoft.VisualStudio.QualityTools.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   </TestList>
+  <TestList name="Befragen" id="a831f23d-bfed-42d6-a8ba-c929a2b0884d" parentListId="8c43106b-9dc1-4907-a29f-aa66a61bf5b6">
+    <TestLinks>
+      <TestLink id="01785aa5-0b69-ee7e-e826-2f693d07795a" name="TestMethod1" storage="af.modul.befragen.test\bin\debug\af.modul.befragen.test.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    </TestLinks>
+  </TestList>
 </TestLists>
