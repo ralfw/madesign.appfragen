@@ -42,7 +42,7 @@ namespace af.modul.befragen
                     break;
                 case "Beantworten":
                     // toggle answered item (update)
-                    AnswerQuestion(input.payload.AntwortmöglichkeitId);
+                    AnswerQuestion(input.payload.AntwortmoeglichkeitId);
                     break;
 
             }
