@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Dynamic;
 using af.contracts;
 using jsonserialization;
 
@@ -40,7 +41,22 @@ namespace af.modul.auswerten
                 // ProzentWeissNicht berechnen
 
             // Kommando "Auswertung anzeigen" zusammenbauen
+            dynamic jsonAuswertung = new ExpandoObject();
+            jsonAuswertung.cmd = "Auswertung anzeigen";
+            jsonAuswertung.payload = new ExpandoObject();
+
+            jsonAuswertung.payload.AnzahlFragen = 10;
+            jsonAuswertung.payload.AnzahlRichtig = 3;
+            jsonAuswertung.payload.ProzentRichtig = 0.3;
+            jsonAuswertung.payload.AnzahlFalsch = 1;
+            jsonAuswertung.payload.ProzentFalsch = 0.1;
+            jsonAuswertung.payload.AnzahlWeissNicht = 6;
+            jsonAuswertung.payload.ProzentWeissNicht = 0.6;
+
+            jsonAuswertung = JsonExtensions.ToJson(jsonAuswertung);
+
             // Kommando "Auswertung anzeigen" senden
+            Json_output(jsonAuswertung);
         }
 
         private void AuswertenBeendenMethode(object jsonObject)
