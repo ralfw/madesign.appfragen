@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Dynamic;
+using System.Windows;
 using af.contracts;
 using jsonserialization;
 
@@ -16,12 +17,13 @@ namespace af.ui
 
         public Ui()
         {
-            _app = new App();
+            _app = Application.Current;
         }
 
         public void Process(string json)
         {
             dynamic jsonObject = json.FromJson();
+            Console.WriteLine("UI: got cmd: {0}", jsonObject.cmd);
             switch ((string)jsonObject.cmd)
             {
                 case "Starten":
@@ -46,8 +48,10 @@ namespace af.ui
 
         private void Starten()
         {
-            var befragen = new Befragen(this);
-            _app.Run(befragen);
+            Console.WriteLine( "UI: Starten: App:{0}", _app );
+            _app.MainWindow = Befragen;
+            Befragen.Show();
+            //_app.Run(befragen);
         }
 
         public void SendCommand(string command, string param)
@@ -87,11 +91,12 @@ namespace af.ui
             var fragen = GetFragen(jsonObject);
 
             // Liste in Befragung setzen
-            var befragen = Befragen;
-            befragen.Fragen = fragen;
+            Befragen.Fragen = fragen;
 
             // Befragung anzeigen
-            _app.Run( befragen );
+            _app.MainWindow = Befragen;
+            Befragen.Show();
+            //_app.Run( befragen );
         }
 
         private List<UiBefragung.Frage> GetFragen(dynamic jsonObject)
@@ -143,20 +148,21 @@ namespace af.ui
                                       }
                               };
 
-            var auswertung = Auswertung;
-            auswertung.DataContext = classes;
-            _app.Run( auswertung );
+            Auswertung.DataContext = classes;
+            Befragen.Close();
+            _app.MainWindow = Auswertung;
+            Auswertung.Show();
         }
 
         private void AuswertungSchliessen()
         {
             // Close Auswertung
-            _app.Shutdown();
-            _befragen.Fragen = null;
-            _app.Run(Befragen);
+            Auswertung.Close();
+            Befragen.Fragen = null;
+            Befragen.Show();
         }
 
-        private App _app;
+        private readonly Application _app;
 
         private Befragen Befragen
         {

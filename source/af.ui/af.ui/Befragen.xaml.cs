@@ -60,7 +60,7 @@ namespace af.ui
                     {
                         // TODO: öffne OpenDialog
                         // nehme Ergebnis und sende es
-                        var zuÖffnendeDatei = "Pisa.txt";
+                        var zuÖffnendeDatei = @"Saeugetiere.txt";
                         _ui.SendCommand( Ui.FragenkatalogLaden, zuÖffnendeDatei );
                     } ) );
             }
