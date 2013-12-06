@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using af.contracts;
 using jsonserialization;
 
@@ -15,17 +11,6 @@ namespace af.modul.auswerten
         public Auswerten(Befragung befragung)
         {
             _befragung = befragung;
-
-            // TODO: Kommando "Auswertung Anzeigen" für das UI feuern
-            //jsonObject.cmd = "Auswertung anzeigen"
-
-            //    jsonObject.payload.AnzahlFragen = AnzahlFragen;
-            //    jsonObject.payload.AnzahlRichtig = AnzahlRichtig;
-            //    jsonObject.payload.ProzentRichtig = ProzentRichtig;
-            //    jsonObject.payload.AnzahlFalsch = AnzahlFalsch;
-            //    jsonObject.payload.ProzentFalsch = ProzentFalsch;
-            //    jsonObject.payload.AnzahlWeissNicht = AnzahlWeissNicht;
-            //    jsonObject.payload.ProzentWeissNicht = ProzentWeissNicht;
         }
 
         public void Process(string json)
@@ -34,12 +19,34 @@ namespace af.modul.auswerten
 
             if (jsonObject.cmd == "Auswerten")
             {
-
+                AuswertenMethode(jsonObject);
             }
             if (jsonObject.cmd == "Auswerten beenden")
             {
-
+                AuswertenBeendenMethode(jsonObject);
             }
+        }
+
+        private void AuswertenMethode(object jsonObject)
+        {
+            // Auswertung erstellen (evtl. per foreach durch jede Frage in der Liste und inkrementieren; danach dann Prozente berechnen.)
+                // AnzahlFragen zählen
+                // AnzahlRichtig(Antworten) zählen
+                // AnzahlFalsch zählen
+                // AnzahlWeissNicht zählen
+
+                // ProzentRichtig berechnen
+                // ProzentFalsch berechnen
+                // ProzentWeissNicht berechnen
+
+            // Kommando "Auswertung anzeigen" zusammenbauen
+            // Kommando "Auswertung anzeigen" senden
+        }
+
+        private void AuswertenBeendenMethode(object jsonObject)
+        {
+            // Auswertung speichern (*.csv)
+            // Kommando "Auswertung schliessen" senden
         }
 
         public event Action<string> Json_output;
