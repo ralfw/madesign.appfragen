@@ -7,7 +7,7 @@ using jsonserialization;
 namespace af.auswerten.test
 {
     [TestClass]
-    public class UnitTest1
+    public class UnitTestsAuswerten
     {
         [TestMethod]
         public void AuswertenZuAuswertungAnzeigenKommandoTest()
@@ -45,11 +45,11 @@ namespace af.auswerten.test
         }
 
         [TestMethod]
-        public void AuswertungSchliessenKommandoTest()
+        public void AuswertungBeendenZuAuswertungSchliessenKommandoTest()
         {
             var auswerten = new Auswerten(new Befragung());
             dynamic expando = new ExpandoObject();
-            expando.cmd = "Auswerten beenden";
+            expando.cmd = "Auswertung beenden";
             var jsonstring = JsonExtensions.ToJson(expando);
 
             var output = string.Empty;
