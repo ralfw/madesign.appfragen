@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:c="clr-namespace:ScottLogic.Controls.PieChart;assembly=af.pieChart"
+        xmlns:ui="clr-namespace:af.ui"
         mc:Ignorable="d" 
         d:DesignHeight="200" d:DesignWidth="200">
 
@@ -15,12 +16,15 @@
         </x:ArrayExtension>
     </Window.Resources>
 
-    <Grid>
+    <StackPanel>
         <c:PieChartLayout HorizontalAlignment="Center"
                           x:Name="piePlotter" PlottedProperty="Anzahl" Margin="10">
             <c:PieChartLayout.ColorSelector>
                 <c:IndexedColourSelector Brushes="{StaticResource brushes}"/>
             </c:PieChartLayout.ColorSelector>
         </c:PieChartLayout>
-    </Grid>
+
+        <Button Content="Auswertung schließen" HorizontalAlignment="Right" Margin="0,0,10,10" Name="auswertenButton" VerticalAlignment="Bottom"
+                Command="{Binding AuswertungSchließenClicked, RelativeSource={RelativeSource AncestorType={x:Type ui:Auswertung}}}"/>
+    </StackPanel>
 </Window>

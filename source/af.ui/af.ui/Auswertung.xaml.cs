@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Input;
 
 namespace af.ui
 {
@@ -24,5 +25,15 @@ namespace af.ui
             _ui = ui;
             DataContext = classes;
         }
+
+        public ICommand AuswertungSchließenClicked
+        {
+            get
+            {
+                return _auswertungSchließenClicked ?? ( _auswertungSchließenClicked = new RelayCommand( param => _ui.SendCommand( Ui.AuswertungBeenden, "" ) ) );
+            }
+        }
+
+        private ICommand _auswertungSchließenClicked;
     }
 }

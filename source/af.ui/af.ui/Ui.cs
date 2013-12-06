@@ -49,14 +49,15 @@ namespace af.ui
         private void Starten()
         {
             Console.WriteLine( "UI: Starten: App:{0}", _app );
-            _app.MainWindow = Befragen;
             Befragen.Show();
-            //_app.Run(befragen);
+            Auswertung.Show();
+            Auswertung.Visibility = Visibility.Hidden;
         }
 
         public void SendCommand(string command, string param)
         {
             dynamic jsonObject = new ExpandoObject();
+            Console.WriteLine( "UI: sends cmd: {0}", command );
 
             switch(command)
             {
@@ -94,9 +95,7 @@ namespace af.ui
             Befragen.Fragen = fragen;
 
             // Befragung anzeigen
-            _app.MainWindow = Befragen;
-            Befragen.Show();
-            //_app.Run( befragen );
+            Befragen.Visibility = Visibility.Visible;
         }
 
         private List<UiBefragung.Frage> GetFragen(dynamic jsonObject)
@@ -149,17 +148,17 @@ namespace af.ui
                               };
 
             Auswertung.DataContext = classes;
-            Befragen.Close();
-            _app.MainWindow = Auswertung;
-            Auswertung.Show();
+            Befragen.Visibility = Visibility.Hidden;
+            Auswertung.Visibility = Visibility.Visible;
         }
 
         private void AuswertungSchliessen()
         {
             // Close Auswertung
-            Auswertung.Close();
+            Auswertung.Visibility = Visibility.Hidden;
+
             Befragen.Fragen = null;
-            Befragen.Show();
+            Befragen.Visibility = Visibility.Visible;
         }
 
         private readonly Application _app;
