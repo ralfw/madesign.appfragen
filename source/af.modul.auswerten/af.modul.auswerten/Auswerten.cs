@@ -41,19 +41,19 @@ namespace af.modul.auswerten
                 // ProzentWeissNicht berechnen
 
             // Kommando "Auswertung anzeigen" zusammenbauen
-            dynamic jsonAuswertung = new ExpandoObject();
-            jsonAuswertung.cmd = "Auswertung anzeigen";
-            jsonAuswertung.payload = new ExpandoObject();
+            dynamic jsonAuswertungObj = new ExpandoObject();
+            jsonAuswertungObj.cmd = "Auswertung anzeigen";
+            jsonAuswertungObj.payload = new ExpandoObject();
 
-            jsonAuswertung.payload.AnzahlFragen = 10;
-            jsonAuswertung.payload.AnzahlRichtig = 3;
-            jsonAuswertung.payload.ProzentRichtig = 0.3;
-            jsonAuswertung.payload.AnzahlFalsch = 1;
-            jsonAuswertung.payload.ProzentFalsch = 0.1;
-            jsonAuswertung.payload.AnzahlWeissNicht = 6;
-            jsonAuswertung.payload.ProzentWeissNicht = 0.6;
+            jsonAuswertungObj.payload.AnzahlFragen = 10;
+            jsonAuswertungObj.payload.AnzahlRichtig = 3;
+            jsonAuswertungObj.payload.ProzentRichtig = 0.3;
+            jsonAuswertungObj.payload.AnzahlFalsch = 1;
+            jsonAuswertungObj.payload.ProzentFalsch = 0.1;
+            jsonAuswertungObj.payload.AnzahlWeissNicht = 6;
+            jsonAuswertungObj.payload.ProzentWeissNicht = 0.6;
 
-            jsonAuswertung = JsonExtensions.ToJson(jsonAuswertung);
+            var jsonAuswertung = JsonExtensions.ToJson(jsonAuswertungObj);
 
             // Kommando "Auswertung anzeigen" senden
             Json_output(jsonAuswertung);
@@ -62,7 +62,13 @@ namespace af.modul.auswerten
         private void AuswertenBeendenMethode(object jsonObject)
         {
             // Auswertung speichern (*.csv)
+
             // Kommando "Auswertung schliessen" senden
+            dynamic jsonAuswertungSchliessenObj = new ExpandoObject();
+            jsonAuswertungSchliessenObj.cmd = "Auswertung schliessen";
+
+            var jsonAuswertungSchliessen = JsonExtensions.ToJson(jsonAuswertungSchliessenObj);
+            Json_output(jsonAuswertungSchliessen);
         }
 
         public event Action<string> Json_output;

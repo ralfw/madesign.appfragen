@@ -1,8 +1,4 @@
-﻿using System;
-using System.Dynamic;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Dynamic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using af.contracts;
 using af.modul.auswerten;
@@ -14,7 +10,7 @@ namespace af.auswerten.test
     public class UnitTest1
     {
         [TestMethod]
-        public void TestFragebogenBekommen()
+        public void AuswertenZuAuswertungAnzeigenKommandoTest()
         {
             // Neue Instanz von der Auswerten Klasse
             var auswerten = new Auswerten(new Befragung());
@@ -27,7 +23,16 @@ namespace af.auswerten.test
             var jsonstring = JsonExtensions.ToJson(expando);
 
             var output = string.Empty;
-            auswerten.Json_output += param => AuswertenOnJsonOutput(param, out output);
+            // EventHandler definieren für das Json_output Event.
+            // (arg) = Name des ersten Parameters der Action Json_output, welcher dann in der folgenden Funktion genutzt wird.
+            // To Expression: auswerten.Json_output += arg => AuswertenOnJsonOutput(out output, arg);
+            auswerten.Json_output += (arg) =>
+                                         {
+                                             AuswertenOnJsonOutput(out output, arg);
+                                         };
+            // Shortened: auswerten.Json_output += arg => output = arg;
+
+            // output = param;
             auswerten.Process(jsonstring);
 
             // JSONstring to ExpandoObject
@@ -37,7 +42,7 @@ namespace af.auswerten.test
             Assert.AreEqual("Auswertung anzeigen", outputExpandoObject.cmd);
         }
 
-        private void AuswertenOnJsonOutput(string s, out string output)
+        private void AuswertenOnJsonOutput(out string output, string s)
         {
             output = s;
         }
