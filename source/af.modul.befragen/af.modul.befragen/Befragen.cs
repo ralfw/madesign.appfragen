@@ -130,8 +130,6 @@ namespace af.modul.befragen
             obj.payload.Fragen = _befragung.Fragen;
             var json = JsonExtensions.ToJson(obj);
             Json_output(json);
-            // Schicke Fragebogen
-            Json_output.Invoke(json);
         }
 
         #endregion
