@@ -3,3 +3,8 @@ Maus
 Ameise*
 Elefant
 Katze
+Wieviel ergibt 2 Säugetiere + 3 Säugetiere?
+4 Säugetiere
+5 Säugetiere*
+6 Säugetiere
+7 Säugetiere
