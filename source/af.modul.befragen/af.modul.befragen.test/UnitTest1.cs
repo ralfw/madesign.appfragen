@@ -7,16 +7,14 @@ using jsonserialization;
 namespace af.modul.befragen.test
 {
     [TestClass]
-    public class UnitTest1
+    public class BefragenUnitTests
     {
-
-        private static readonly string FILENAME = "Saeugetiere.txt";
+        private const string FILENAME = "Saeugetiere.txt";
 
 
         [TestMethod]
-        public void TestMethod1()
+        public void TestQuestionaireLoading()
         {
-
             dynamic input = new ExpandoObject();
             input.cmd = "Fragenkatalog laden";
             input.payload = new ExpandoObject();
@@ -31,7 +29,7 @@ namespace af.modul.befragen.test
             befragen.Process(json);
 
             dynamic result = jsonResult.FromJson();
-            
+
             dynamic dateiname = result.Dateiname;
             Assert.AreEqual("Saeugetiere.txt", dateiname);
             dynamic fragen = result.Fragen[0];
@@ -39,15 +37,10 @@ namespace af.modul.befragen.test
             Assert.AreEqual("Was ist kein Säugetier?", fragen.Text);
             dynamic antwortmöglichkeiten = fragen.Antwortmöglichkeiten;
             Assert.AreEqual(4, antwortmöglichkeiten.Length);
-            foreach (dynamic antwortmöglichkeit in antwortmöglichkeiten) 
+            foreach (dynamic antwortmöglichkeit in antwortmöglichkeiten)
             {
-                string id;
-                bool istRichtigeAntwort;
-                bool istGewählteAntwort;
-                string text;
-                switch (id = (string)antwortmöglichkeit.Id) 
+                switch ((string)antwortmöglichkeit.Id)
                 {
-                    
                     case "1":
                         Assert.AreEqual(false, antwortmöglichkeit.IstRichtigeAntwort);
                         Assert.AreEqual("Maus", antwortmöglichkeit.Text);

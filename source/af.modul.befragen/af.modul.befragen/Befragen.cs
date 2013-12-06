@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
+using System.Globalization;
 using System.IO;
-
+using System.Linq;
 using af.contracts;
 
 using jsonserialization;
@@ -27,52 +27,93 @@ namespace af.modul.befragen
                     // Reset questionaire
                     _befragung.Reset(); // Creates list empty list of answers!
                     var dateiname = (string)input.payload.Dateiname;
+
                     // Open questionaire catalog file
-                    var prefix = @"..\..\..\..\..\bin\Properties\";
+                    const string prefix = @"..\..\..\..\..\bin\Properties\";
                     try
                     {
-                        using (StreamReader fileStreamReader = new StreamReader(prefix + dateiname))
-                        {
-                            var id = 0;
-                            while (fileStreamReader.Peek() >= 0)
-                            {
-                                var line = fileStreamReader.ReadLine();
-                                if (line.EndsWith("?"))
-                                {
-                                    if (AktuelleFrage != null)
-                                    { 
-                                        _befragung.Fragen.Add(AktuelleFrage); 
-                                    }
-                                    AktuelleFrage = new Befragung.Frage() { Text = line };
-                                    AktuelleFrage.Antwortmöglichkeiten = new List<Befragung.Antwortmöglichkeit>();
-                                }
-                                else
-                                {
-                                    AktuelleFrage.Antwortmöglichkeiten.Add(
-                                        new Befragung.Antwortmöglichkeit()
-                                        {
-                                            Id = (++id).ToString(),
-                                            IstAlsAntwortSelektiert = false,
-                                            IstRichtigeAntwort = line.EndsWith("*"),
-                                            Text = line.Replace("*", string.Empty)
-                                        }
-                                        );
-                                }
-
-                            }
-                            _befragung.Fragen.Add(AktuelleFrage);
-                        }
+                        ParseQuestionaire(new StreamReader(prefix + dateiname));
                     }
                     catch (FileNotFoundException fileNotFoundException)
                     {
                         Console.WriteLine("{0}", fileNotFoundException);
                     }
-                    // Schicke Fragebogen
-                    Json_output.Invoke(_befragung.ToJson());
+
                     break;
+                case "Beantworten":
+                    // toggle answered item (update)
+                    AnswerQuestion(input.payload.AntwortmöglichkeitId);
+                    break;
+
             }
+            SendQuestionaire();
         }
 
         public event Action<string> Json_output;
+
+        #region private methods
+        private void ParseQuestionaire(TextReader textReader)
+        {
+            using (textReader)
+            {
+                var id = 0;
+                while (textReader.Peek() >= 0)
+                {
+                    var line = textReader.ReadLine();
+                    if (line == null)
+                    {
+                        break;
+                    }
+                    if (line.EndsWith("?"))
+                    {
+                        if (AktuelleFrage != null)
+                        {
+                            _befragung.Fragen.Add(AktuelleFrage);
+                        }
+                        AktuelleFrage = new Befragung.Frage
+                                            {
+                                                Text = line,
+                                                Antwortmöglichkeiten = new List<Befragung.Antwortmöglichkeit>()
+                                            };
+                    }
+                    else
+                    {
+                        AktuelleFrage.Antwortmöglichkeiten.Add(
+                            new Befragung.Antwortmöglichkeit
+                            {
+                                Id = (++id).ToString(CultureInfo.InvariantCulture),
+                                IstAlsAntwortSelektiert = false,
+                                IstRichtigeAntwort = line.EndsWith("*"),
+                                Text = line.Replace("*", string.Empty)
+                            });
+                    }
+
+                }
+                _befragung.Fragen.Add(AktuelleFrage);
+            }
+        }
+
+        private void AnswerQuestion(string id)
+        {
+            if (_befragung == null)
+            {
+                return;
+            }
+            foreach (var antwortmöglichkeit in _befragung.Fragen.SelectMany(
+                frage => frage.Antwortmöglichkeiten
+                    .Where(antwortmöglichkeit => antwortmöglichkeit.Id == id)))
+            {
+                antwortmöglichkeit.IstAlsAntwortSelektiert = !antwortmöglichkeit.IstAlsAntwortSelektiert;
+            }
+        }
+
+        private void SendQuestionaire()
+        {
+            // Schicke Fragebogen
+            Json_output.Invoke(_befragung.ToJson());
+        }
+
+        #endregion
+
     }
 }
