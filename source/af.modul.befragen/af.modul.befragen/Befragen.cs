@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace af.modul.befragen
                     var dateiname = (string)input.payload.Dateiname;
 
                     // Open questionaire catalog file
-                    const string prefix = @"..\..\..\..\..\bin\Properties\";
+                    const string prefix = @".\Properties\";
                     try
                     {
                         ParseQuestionaire(new StreamReader(prefix + dateiname));
@@ -123,8 +124,14 @@ namespace af.modul.befragen
 
         private void SendQuestionaire()
         {
+            dynamic obj = new ExpandoObject();
+            obj.cmd = "Fragebogen anzeigen";
+            obj.payload = new ExpandoObject();
+            obj.payload.Fragen = _befragung.Fragen;
+            var json = JsonExtensions.ToJson(obj);
+            Json_output(json);
             // Schicke Fragebogen
-            Json_output.Invoke(_befragung.ToJson());
+            Json_output.Invoke(json);
         }
 
         #endregion

@@ -31,9 +31,9 @@ namespace af.modul.befragen.test
 
             dynamic result = jsonResult.FromJson();
 
-            dynamic dateiname = result.Dateiname;
-            Assert.AreEqual("Saeugetiere.txt", dateiname);
-            dynamic fragen = result.Fragen[0];
+            dynamic command = result.cmd;
+            Assert.AreEqual("Fragebogen anzeigen", command);
+            dynamic fragen = result.payload.Fragen[0];
 
             Assert.AreEqual("Was ist kein Säugetier?", fragen.Text);
             dynamic antwortmöglichkeiten = fragen.Antwortmöglichkeiten;
@@ -107,7 +107,9 @@ namespace af.modul.befragen.test
             befragen.Process(json);
 
             dynamic result = jsonResult.FromJson();
-            dynamic fragen = result.Fragen;
+            dynamic command = result.cmd;
+            Assert.AreEqual("Fragebogen anzeigen", command);
+            var fragen = result.payload.Fragen;
             Assert.IsNotNull(fragen[0]);
             Assert.AreEqual(true, fragen[0].Antwortmöglichkeiten[0].IstAlsAntwortSelektiert);
         }
