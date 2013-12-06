@@ -39,15 +39,14 @@ namespace af.modul.befragen
                     {
                         Console.WriteLine("{0}", fileNotFoundException);
                     }
-
+                    SendQuestionaire();
                     break;
                 case "Beantworten":
                     // toggle answered item (update)
                     AnswerQuestion(input.payload.AntwortmoeglichkeitId);
+                    SendQuestionaire();
                     break;
-
             }
-            SendQuestionaire();
         }
 
         public event Action<string> Json_output;
