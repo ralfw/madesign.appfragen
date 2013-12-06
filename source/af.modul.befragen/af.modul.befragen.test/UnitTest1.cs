@@ -37,7 +37,7 @@ namespace af.modul.befragen.test
 
             Assert.AreEqual("Was ist kein Säugetier?", fragen.Text);
             dynamic antwortmöglichkeiten = fragen.Antwortmöglichkeiten;
-            Assert.AreEqual(4, antwortmöglichkeiten.Length);
+            Assert.AreEqual(5, antwortmöglichkeiten.Length);
             foreach (dynamic antwortmöglichkeit in antwortmöglichkeiten)
             {
                 switch ((string)antwortmöglichkeit.Id)
@@ -58,7 +58,10 @@ namespace af.modul.befragen.test
                         Assert.AreEqual(false, antwortmöglichkeit.IstRichtigeAntwort);
                         Assert.AreEqual("Katze", antwortmöglichkeit.Text);
                         break;
-
+                    case "5":
+                         Assert.AreEqual(false, antwortmöglichkeit.IstRichtigeAntwort);
+                        Assert.AreEqual("Weiß nicht", antwortmöglichkeit.Text);
+                        break;
                     default:
                         Assert.AreEqual(false, antwortmöglichkeit.IstAlsAntwortSelektiert);
                         break;

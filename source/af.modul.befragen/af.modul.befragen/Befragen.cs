@@ -68,6 +68,13 @@ namespace af.modul.befragen
                     {
                         if (AktuelleFrage != null)
                         {
+                            AktuelleFrage.Antwortmöglichkeiten.Add(new Befragung.Antwortmöglichkeit
+                                                                       {
+                                                                           Id = (++id).ToString(CultureInfo.InvariantCulture),
+                                                                           IstAlsAntwortSelektiert = false,
+                                                                           IstRichtigeAntwort = false,
+                                                                           Text = "Weiß nicht"
+                                                                       });
                             _befragung.Fragen.Add(AktuelleFrage);
                         }
                         AktuelleFrage = new Befragung.Frage
@@ -89,6 +96,13 @@ namespace af.modul.befragen
                     }
 
                 }
+                AktuelleFrage.Antwortmöglichkeiten.Add(new Befragung.Antwortmöglichkeit
+                {
+                    Id = (++id).ToString(CultureInfo.InvariantCulture),
+                    IstAlsAntwortSelektiert = false,
+                    IstRichtigeAntwort = false,
+                    Text = "Weiß nicht"
+                });
                 _befragung.Fragen.Add(AktuelleFrage);
             }
         }
