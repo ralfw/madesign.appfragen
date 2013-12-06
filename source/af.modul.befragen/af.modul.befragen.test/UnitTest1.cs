@@ -1,4 +1,5 @@
-﻿using System.Dynamic;
+﻿using System.Collections.Generic;
+using System.Dynamic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using af.contracts;
@@ -10,10 +11,10 @@ namespace af.modul.befragen.test
     public class BefragenUnitTests
     {
         private const string FILENAME = "Saeugetiere.txt";
-
+        private Befragen _befragen;
 
         [TestMethod]
-        public void TestQuestionaireLoading()
+        public void QuestionaireLoading()
         {
             dynamic input = new ExpandoObject();
             input.cmd = "Fragenkatalog laden";
@@ -21,12 +22,12 @@ namespace af.modul.befragen.test
 
             input.payload.Dateiname = FILENAME;
 
-            var befragen = new Befragen(new Befragung { Dateiname = FILENAME });
+            _befragen = new Befragen(new Befragung { Dateiname = FILENAME });
             var jsonResult = string.Empty;
-            befragen.Json_output += _ => jsonResult = _;
+            _befragen.Json_output += _ => jsonResult = _;
 
             var json = JsonExtensions.ToJson(input);
-            befragen.Process(json);
+            _befragen.Process(json);
 
             dynamic result = jsonResult.FromJson();
 
@@ -36,7 +37,7 @@ namespace af.modul.befragen.test
 
             Assert.AreEqual("Was ist kein Säugetier?", fragen.Text);
             dynamic antwortmöglichkeiten = fragen.Antwortmöglichkeiten;
-            Assert.AreEqual(4, antwortmöglichkeiten.Length);
+            Assert.AreEqual(5, antwortmöglichkeiten.Length);
             foreach (dynamic antwortmöglichkeit in antwortmöglichkeiten)
             {
                 switch ((string)antwortmöglichkeit.Id)
@@ -57,12 +58,58 @@ namespace af.modul.befragen.test
                         Assert.AreEqual(false, antwortmöglichkeit.IstRichtigeAntwort);
                         Assert.AreEqual("Katze", antwortmöglichkeit.Text);
                         break;
-
+                    case "5":
+                         Assert.AreEqual(false, antwortmöglichkeit.IstRichtigeAntwort);
+                        Assert.AreEqual("Weiß nicht", antwortmöglichkeit.Text);
+                        break;
                     default:
                         Assert.AreEqual(false, antwortmöglichkeit.IstAlsAntwortSelektiert);
                         break;
                 }
             }
+        }
+
+        [TestMethod]
+        public void AnsweringQuestion()
+        {
+            var befragung = new Befragung
+                                {
+                                    Dateiname = "Testdateiname",
+                                };
+            befragung.Reset();
+            befragung.Fragen.Add(
+                new Befragung.Frage
+                    {
+                        Text = "Was ist kein Säugetier",
+                        Antwortmöglichkeiten = new List<Befragung.Antwortmöglichkeit>
+                                                   {
+                                                       new Befragung.Antwortmöglichkeit
+                                                           {
+                                                               Id = "1",
+                                                               IstAlsAntwortSelektiert = false,
+                                                               IstRichtigeAntwort = true,
+                                                               Text = "Ameise"
+                                                           }
+                                                   }
+                    });
+
+            Assert.AreEqual(false, befragung.Fragen[0].Antwortmöglichkeiten[0].IstAlsAntwortSelektiert);
+            var befragen = new Befragen(befragung);
+            dynamic input = new ExpandoObject();
+            input.cmd = "Beantworten";
+            input.payload = new ExpandoObject();
+            input.payload.AntwortmoeglichkeitId = "1";
+
+            var jsonResult = string.Empty;
+            befragen.Json_output += _ => jsonResult = _;
+
+            var json = JsonExtensions.ToJson(input);
+            befragen.Process(json);
+
+            dynamic result = jsonResult.FromJson();
+            dynamic fragen = result.Fragen;
+            Assert.IsNotNull(fragen[0]);
+            Assert.AreEqual(true, fragen[0].Antwortmöglichkeiten[0].IstAlsAntwortSelektiert);
         }
     }
 }
