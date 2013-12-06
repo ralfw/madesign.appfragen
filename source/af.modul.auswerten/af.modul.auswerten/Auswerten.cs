@@ -22,7 +22,7 @@ namespace af.modul.auswerten
             {
                 AuswertenMethode(jsonObject);
             }
-            if (jsonObject.cmd == "Auswerten beenden")
+            if (jsonObject.cmd == "Auswertung beenden")
             {
                 AuswertenBeendenMethode(jsonObject);
             }
