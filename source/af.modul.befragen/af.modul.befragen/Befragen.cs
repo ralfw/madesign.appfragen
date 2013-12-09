@@ -30,10 +30,9 @@ namespace af.modul.befragen
                     var dateiname = (string)input.payload.Dateiname;
 
                     // Open questionaire catalog file
-                    const string prefix = @".\Properties\";
                     try
                     {
-                        ParseQuestionaire(new StreamReader(prefix + dateiname));
+                        ParseQuestionaire(new StreamReader(dateiname));
                     }
                     catch (FileNotFoundException fileNotFoundException)
                     {

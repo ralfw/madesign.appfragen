@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
+using Microsoft.Win32;
 
 namespace af.ui
 {
@@ -58,10 +59,21 @@ namespace af.ui
             {
                 return _ladeFragenkatalogClicked ?? ( _ladeFragenkatalogClicked = new RelayCommand( param =>
                     {
-                        // TODO: öffne OpenDialog
-                        // nehme Ergebnis und sende es
-                        var zuÖffnendeDatei = @"Saeugetiere.txt";
-                        _ui.SendCommand( Ui.FragenkatalogLaden, zuÖffnendeDatei );
+                        var openFileDialog = new OpenFileDialog
+                                                 {
+                                                     Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",
+                                                     FilterIndex = 2,
+                                                     RestoreDirectory = true
+                                                 };
+
+                        var result = openFileDialog.ShowDialog();
+
+                        if ( result == true )
+                        {
+                            // nehme Ergebnis und sende es
+                            var zuÖffnendeDatei = openFileDialog.FileName;
+                            _ui.SendCommand( Ui.FragenkatalogLaden, zuÖffnendeDatei );
+                        }
                     } ) );
             }
         }
