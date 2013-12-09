@@ -20,7 +20,7 @@ namespace af.modul.auswerten
 
             if (jsonObject.cmd == "Auswerten")
             {
-                AuswertenMethode(jsonObject);
+                AuswertenMethode();
             }
             if (jsonObject.cmd == "Auswertung beenden")
             {
@@ -28,11 +28,13 @@ namespace af.modul.auswerten
             }
         }
 
-        private void AuswertenMethode(object jsonObject)
+        private void AuswertenMethode()
         {
             // Auswertung erstellen (evtl. per foreach durch jede Frage in der Liste und inkrementieren; danach dann Prozente berechnen.)
                 // AnzahlFragen zählen
+            var anzahlFragen = _befragung.Fragen.Count;
                 // AnzahlRichtig(Antworten) zählen
+            var richtigAnzahl = 3;
                 // AnzahlFalsch zählen
                 // AnzahlWeissNicht zählen
 
@@ -45,8 +47,8 @@ namespace af.modul.auswerten
             jsonAuswertungObj.cmd = "Auswertung anzeigen";
             jsonAuswertungObj.payload = new ExpandoObject();
 
-            jsonAuswertungObj.payload.AnzahlFragen = 10;
-            jsonAuswertungObj.payload.AnzahlRichtig = 3;
+            jsonAuswertungObj.payload.AnzahlFragen = anzahlFragen;
+            jsonAuswertungObj.payload.AnzahlRichtig = richtigAnzahl;
             jsonAuswertungObj.payload.ProzentRichtig = 0.3;
             jsonAuswertungObj.payload.AnzahlFalsch = 1;
             jsonAuswertungObj.payload.ProzentFalsch = 0.1;
