@@ -87,7 +87,70 @@ namespace af.auswerten.test
             auswerten.Process(jsonstring);
             dynamic outputExpandoObject = output.FromJson();
 
-            Assert.AreEqual(3, outputExpandoObject.payload.AnzahlFragen);
+            Assert.AreEqual(4, outputExpandoObject.payload.AnzahlFragen);
+        }
+
+        [TestMethod]
+        public void RichtigeAntwortenZählenUndProzentTest()
+        {
+            // _befragung mit Fragen füllen
+            _befragung.Fragen = Util.FrageListeErstellen();
+
+            var auswerten = new Auswerten(_befragung);
+            dynamic expando = new ExpandoObject();
+            expando.cmd = "Auswerten";
+            var jsonstring = JsonExtensions.ToJson(expando);
+
+            var output = string.Empty;
+            auswerten.Json_output += arg => output = arg;
+
+            auswerten.Process(jsonstring);
+            dynamic outputExpandoObject = output.FromJson();
+
+            Assert.AreEqual(2, outputExpandoObject.payload.AnzahlRichtig);
+            Assert.AreEqual(0.5, outputExpandoObject.payload.ProzentRichtig);
+        }
+
+        [TestMethod]
+        public void FalscheAntwortenZählenUndProzentTest()
+        {
+            // _befragung mit Fragen füllen
+            _befragung.Fragen = Util.FrageListeErstellen();
+
+            var auswerten = new Auswerten(_befragung);
+            dynamic expando = new ExpandoObject();
+            expando.cmd = "Auswerten";
+            var jsonstring = JsonExtensions.ToJson(expando);
+
+            var output = string.Empty;
+            auswerten.Json_output += arg => output = arg;
+
+            auswerten.Process(jsonstring);
+            dynamic outputExpandoObject = output.FromJson();
+
+            Assert.AreEqual(1, outputExpandoObject.payload.AnzahlFalsch);
+            Assert.AreEqual(0.25, outputExpandoObject.payload.ProzentFalsch);
+        }
+
+        [TestMethod]
+        public void WeissNichtAntwortenZählenUndProzentTest()
+        {
+            // _befragung mit Fragen füllen
+            _befragung.Fragen = Util.FrageListeErstellen();
+
+            var auswerten = new Auswerten(_befragung);
+            dynamic expando = new ExpandoObject();
+            expando.cmd = "Auswerten";
+            var jsonstring = JsonExtensions.ToJson(expando);
+
+            var output = string.Empty;
+            auswerten.Json_output += arg => output = arg;
+
+            auswerten.Process(jsonstring);
+            dynamic outputExpandoObject = output.FromJson();
+
+            Assert.AreEqual(1, outputExpandoObject.payload.AnzahlWeissNicht);
+            Assert.AreEqual(0.25, outputExpandoObject.payload.ProzentWeissNicht);
         }
     }
 }

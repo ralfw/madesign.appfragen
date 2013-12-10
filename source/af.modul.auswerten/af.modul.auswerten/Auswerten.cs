@@ -28,32 +28,80 @@ namespace af.modul.auswerten
             }
         }
 
+        // Auswertung erstellen
         private void AuswertenMethode()
         {
-            // Auswertung erstellen (evtl. per foreach durch jede Frage in der Liste und inkrementieren; danach dann Prozente berechnen.)
-                // AnzahlFragen zählen
+            // AnzahlFragen zählen
             var anzahlFragen = _befragung.Fragen.Count;
-                // AnzahlRichtig(Antworten) zählen
-            var richtigAnzahl = 3;
-                // AnzahlFalsch zählen
-                // AnzahlWeissNicht zählen
+            // Variablen
+            var richtigAnzahl = 0.0;
+            var falschAnzahl = 0.0;
+            var weissnichtAnzahl = 0.0;
+            var richtigProzent = 0.0;
+            var falschProzent = 0.0;
+            var weissnichtProzent = 0.0;
 
-                // ProzentRichtig berechnen
-                // ProzentFalsch berechnen
-                // ProzentWeissNicht berechnen
+            foreach (var frage in _befragung.Fragen)
+            {
+                var frageIstRichtigBeantwortet = true;
+
+                // frageIstRichtigBeantwortet = false; sobald etwas falsch gemacht wird.
+                foreach (var antwortmöglichkeit in frage.Antwortmöglichkeiten)
+                {
+                    // selektiert und NICHT richtig
+                    if (antwortmöglichkeit.IstAlsAntwortSelektiert && !antwortmöglichkeit.IstRichtigeAntwort)
+                    {
+                        frageIstRichtigBeantwortet = false;
+                        break;
+                    }
+                    // NICHT selektiert und richtig
+                    if (!antwortmöglichkeit.IstAlsAntwortSelektiert && antwortmöglichkeit.IstRichtigeAntwort)
+                    {
+                        frageIstRichtigBeantwortet = false;
+                        break;
+                    }
+                    // selektiert und richtig = true
+                    // NICHT selektiert und NICHT richtig = true
+                }
+
+                if (frageIstRichtigBeantwortet)
+                {
+                    // AnzahlRichtig zählen
+                    richtigAnzahl++;
+                }
+                else
+                {
+                    // AnzahlFalsch zählen
+                    falschAnzahl++;
+                }
+                if (frage.Antwortmöglichkeiten[frage.Antwortmöglichkeiten.Count-1].IstAlsAntwortSelektiert)
+                {
+                    // AnzahlWeissnicht zählen
+                    weissnichtAnzahl++;
+                    falschAnzahl--; // Falls "weissnicht" nicht zu "falsch" gezählt werden soll.
+                }
+
+            }
+
+            // ProzentRichtig berechnen
+            richtigProzent = richtigAnzahl / anzahlFragen;
+            // ProzentFalsch berechnen
+            falschProzent = falschAnzahl / anzahlFragen;
+            // ProzentWeissNicht berechnen
+            weissnichtProzent = weissnichtAnzahl / anzahlFragen;
 
             // Kommando "Auswertung anzeigen" zusammenbauen
             dynamic jsonAuswertungObj = new ExpandoObject();
             jsonAuswertungObj.cmd = "Auswertung anzeigen";
             jsonAuswertungObj.payload = new ExpandoObject();
 
-            jsonAuswertungObj.payload.AnzahlFragen = anzahlFragen;
-            jsonAuswertungObj.payload.AnzahlRichtig = richtigAnzahl;
-            jsonAuswertungObj.payload.ProzentRichtig = 0.3;
-            jsonAuswertungObj.payload.AnzahlFalsch = 1;
-            jsonAuswertungObj.payload.ProzentFalsch = 0.1;
-            jsonAuswertungObj.payload.AnzahlWeissNicht = 6;
-            jsonAuswertungObj.payload.ProzentWeissNicht = 0.6;
+            jsonAuswertungObj.payload.AnzahlFragen          = anzahlFragen;
+            jsonAuswertungObj.payload.AnzahlRichtig         = richtigAnzahl;
+            jsonAuswertungObj.payload.ProzentRichtig        = richtigProzent;
+            jsonAuswertungObj.payload.AnzahlFalsch          = falschAnzahl;
+            jsonAuswertungObj.payload.ProzentFalsch         = falschProzent;
+            jsonAuswertungObj.payload.AnzahlWeissNicht      = weissnichtAnzahl;
+            jsonAuswertungObj.payload.ProzentWeissNicht     = weissnichtProzent;
 
             var jsonAuswertung = JsonExtensions.ToJson(jsonAuswertungObj);
 

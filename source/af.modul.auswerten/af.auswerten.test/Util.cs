@@ -54,7 +54,7 @@ namespace af.auswerten.test
                                                            {
                                                                ErstelleAntwortmöglichkeit("F1A1", "Hund"),
                                                                ErstelleAntwortmöglichkeit("F1A2", "Katze"),
-                                                               ErstelleAntwortmöglichkeit("F1A3", "Fisch", true),
+                                                               ErstelleAntwortmöglichkeit("F1A3", "Fisch", true, true),
                                                                ErstelleAntwortmöglichkeit("F1A4", "Weiß nicht")
                                                            }
             };
@@ -68,13 +68,36 @@ namespace af.auswerten.test
                                                                 ErstelleAntwortmöglichkeit("F2A1", "3"),
                                                                 ErstelleAntwortmöglichkeit("F2A2", "5", true),
                                                                 ErstelleAntwortmöglichkeit("F2A3", "8"),
-                                                                ErstelleAntwortmöglichkeit("F2A4", "Weiß nicht")
+                                                                ErstelleAntwortmöglichkeit("F2A4", "Weiß nicht", false, true)
                                                             }
             };
             frageListe.Add(frage2);
 
-            var frage3 = FrageErstellen("3", 1);
+            var frage3 = new Befragung.Frage
+            {
+                Text = "Was ist 10+12?",
+                Antwortmöglichkeiten = new List<Befragung.Antwortmöglichkeit>
+                                                            {
+                                                                ErstelleAntwortmöglichkeit("F2A1", "120", false, true),
+                                                                ErstelleAntwortmöglichkeit("F2A2", "24", true),
+                                                                ErstelleAntwortmöglichkeit("F2A3", "12"),
+                                                                ErstelleAntwortmöglichkeit("F2A4", "Weiß nicht")
+                                                            }
+            };
             frageListe.Add(frage3);
+
+            var frage4 = new Befragung.Frage
+            {
+                Text = "Waaaah?",
+                Antwortmöglichkeiten = new List<Befragung.Antwortmöglichkeit>
+                                                            {
+                                                                ErstelleAntwortmöglichkeit("F2A1", "Ja"),
+                                                                ErstelleAntwortmöglichkeit("F2A2", "Ne"),
+                                                                ErstelleAntwortmöglichkeit("F2A3", "Beides", true, true),
+                                                                ErstelleAntwortmöglichkeit("F2A4", "Weiß nicht")
+                                                            }
+            };
+            frageListe.Add(frage4);
 
             return frageListe;
         }
