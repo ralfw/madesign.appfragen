@@ -131,23 +131,24 @@ namespace af.ui
                                       {
                                           Class = "richtig",
                                           Anzahl = jsonObject.payload.AnzahlRichtig,
-                                          AnzahlProzent = jsonObject.payload.ProzentRichtig
+                                          AnzahlProzent = jsonObject.payload.ProzentRichtig * 100
                                       },
                                   new Category
                                       {
                                           Class = "falsch",
                                           Anzahl = jsonObject.payload.AnzahlFalsch,
-                                          AnzahlProzent = jsonObject.payload.ProzentFalsch
+                                          AnzahlProzent = jsonObject.payload.ProzentFalsch * 100
                                       },
                                   new Category
                                       {
                                           Class = "weiß nicht",
                                           Anzahl = jsonObject.payload.AnzahlWeissNicht,
-                                          AnzahlProzent = jsonObject.payload.ProzentWeissNicht
+                                          AnzahlProzent = jsonObject.payload.ProzentWeissNicht * 100
                                       }
                               };
 
             Auswertung.DataContext = classes;
+            Auswertung.AnzahlFragen = jsonObject.payload.AnzahlFragen;
             Befragen.Visibility = Visibility.Hidden;
             Auswertung.Visibility = Visibility.Visible;
         }

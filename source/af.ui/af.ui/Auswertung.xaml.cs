@@ -35,5 +35,16 @@ namespace af.ui
         }
 
         private ICommand _auswertungSchließenClicked;
+
+        public static readonly DependencyProperty AnzahlFragenProperty =
+            DependencyProperty.Register("AnzahlFragen", typeof (int), typeof (Auswertung), new PropertyMetadata(default(int)));
+
+        public int AnzahlFragen
+        {
+            get { return (int) GetValue(AnzahlFragenProperty); }
+            set { SetValue(AnzahlFragenProperty, value); }
+        }
+
+
     }
 }

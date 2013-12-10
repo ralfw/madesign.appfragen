@@ -14,6 +14,14 @@
             <SolidColorBrush Color="Red"/>
             <SolidColorBrush Color="Gray"/>
         </x:ArrayExtension>
+
+        <DataTemplate x:Key="Auswertung.Style" DataType="{x:Type ui:Category}">
+            <StackPanel Background="Beige" Margin="10,0,0,10">
+                <TextBlock Text="{Binding Class, StringFormat={}Typ: {0}}"/>
+                <TextBlock Text="{Binding Anzahl, StringFormat={}Anzahl:  {0}}"/>
+                <TextBlock Text="{Binding AnzahlProzent, StringFormat={}Prozent: {0}%}"/>
+            </StackPanel>
+        </DataTemplate>
     </Window.Resources>
 
     <StackPanel>
@@ -23,6 +31,12 @@
                 <c:IndexedColourSelector Brushes="{StaticResource brushes}"/>
             </c:PieChartLayout.ColorSelector>
         </c:PieChartLayout>
+
+        <TextBlock>Tabellarische Übersicht</TextBlock>
+        <TextBlock Text="{Binding AnzahlFragen, RelativeSource={RelativeSource AncestorType={x:Type ui:Auswertung}}, StringFormat={}Anzahl Fragen:{0}}"
+                   Margin="10,0,0,10"/>
+        <ItemsControl ItemsSource="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type ui:Auswertung}}}"
+                      ItemTemplate="{StaticResource Auswertung.Style}"/>
 
         <Button Content="Auswertung schließen" HorizontalAlignment="Right" Margin="0,0,10,10" Name="auswertenButton" VerticalAlignment="Bottom"
                 Command="{Binding AuswertungSchließenClicked, RelativeSource={RelativeSource AncestorType={x:Type ui:Auswertung}}}"/>
