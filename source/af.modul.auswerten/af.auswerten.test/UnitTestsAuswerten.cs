@@ -9,11 +9,20 @@ namespace af.auswerten.test
     [TestClass]
     public class UnitTestsAuswerten
     {
+        private Befragung _befragung;
+
+        [TestInitialize]
+        public void TestInit()
+        {
+            _befragung = new Befragung();
+            _befragung.Reset();
+        }
+
         [TestMethod]
         public void AuswertenZuAuswertungAnzeigenKommandoTest()
         {
             // Neue Instanz von der Auswerten Klasse
-            var auswerten = new Auswerten(new Befragung());
+            var auswerten = new Auswerten(_befragung);
             // ExpandoObject mit Kommando erstellen zum Anfeuern von Auswerten
             dynamic expando = new ExpandoObject();
             expando.cmd = "Auswerten";
@@ -47,7 +56,7 @@ namespace af.auswerten.test
         [TestMethod]
         public void AuswertungBeendenZuAuswertungSchliessenKommandoTest()
         {
-            var auswerten = new Auswerten(new Befragung());
+            var auswerten = new Auswerten(_befragung);
             dynamic expando = new ExpandoObject();
             expando.cmd = "Auswertung beenden";
             var jsonstring = JsonExtensions.ToJson(expando);
@@ -59,6 +68,26 @@ namespace af.auswerten.test
             dynamic outputExpandoObject = output.FromJson();
 
             Assert.AreEqual("Auswertung schliessen", outputExpandoObject.cmd);
+        }
+
+        [TestMethod]
+        public void FragenZählenTest()
+        {
+            // _befragung mit Fragen füllen
+            _befragung.Fragen = Util.FrageListeErstellen();
+
+            var auswerten = new Auswerten(_befragung);
+            dynamic expando = new ExpandoObject();
+            expando.cmd = "Auswerten";
+            var jsonstring = JsonExtensions.ToJson(expando);
+
+            var output = string.Empty;
+            auswerten.Json_output += arg => output = arg;
+
+            auswerten.Process(jsonstring);
+            dynamic outputExpandoObject = output.FromJson();
+
+            Assert.AreEqual(3, outputExpandoObject.payload.AnzahlFragen);
         }
     }
 }
