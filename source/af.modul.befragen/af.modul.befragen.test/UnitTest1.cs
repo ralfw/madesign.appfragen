@@ -113,5 +113,30 @@ namespace af.modul.befragen.test
             Assert.IsNotNull(fragen[0]);
             Assert.AreEqual(true, fragen[0].Antwortmöglichkeiten[0].IstAlsAntwortSelektiert);
         }
+
+        [TestMethod]
+        public void OpenFileTwice()
+        {
+            dynamic input = new ExpandoObject();
+            input.cmd = "Fragenkatalog laden";
+            input.payload = new ExpandoObject();
+
+            input.payload.Dateiname = FILENAME;
+
+            _befragen = new Befragen( new Befragung { Dateiname = FILENAME } );
+            var jsonResult = string.Empty;
+            _befragen.Json_output += _ => jsonResult = _;
+
+            var json = JsonExtensions.ToJson( input );
+            _befragen.Process( json );
+
+            dynamic result = jsonResult.FromJson();
+            Assert.AreEqual(2, result.payload.Fragen.Length);
+
+            _befragen.Process( json );
+
+            result = jsonResult.FromJson();
+            Assert.AreEqual( 2, result.payload.Fragen.Length );
+        }
     }
 }

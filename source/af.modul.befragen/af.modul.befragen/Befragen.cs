@@ -13,7 +13,6 @@ namespace af.modul.befragen
     public class Befragen : IComponent
     {
         private readonly Befragung _befragung;
-        public Befragung.Frage AktuelleFrage;
         public Befragen(Befragung befragung)
         {
             _befragung = befragung;
@@ -32,7 +31,7 @@ namespace af.modul.befragen
                     // Open questionaire catalog file
                     try
                     {
-                        ParseQuestionaire(new StreamReader(dateiname));
+                        ParseQuestionaire(dateiname);
                     }
                     catch (FileNotFoundException fileNotFoundException)
                     {
@@ -51,11 +50,13 @@ namespace af.modul.befragen
         public event Action<string> Json_output;
 
         #region private methods
-        private void ParseQuestionaire(TextReader textReader)
+        private void ParseQuestionaire(string fileName)
         {
-            using (textReader)
+            TextReader textReader;
+            using (textReader = new StreamReader(fileName))
             {
                 var id = 0;
+                Befragung.Frage aktuelleFrage = null;
                 while (textReader.Peek() >= 0)
                 {
                     var line = textReader.ReadLine();
@@ -65,18 +66,8 @@ namespace af.modul.befragen
                     }
                     if (line.EndsWith("?"))
                     {
-                        if (AktuelleFrage != null)
-                        {
-                            AktuelleFrage.Antwortmöglichkeiten.Add(new Befragung.Antwortmöglichkeit
-                                                                       {
-                                                                           Id = (++id).ToString(CultureInfo.InvariantCulture),
-                                                                           IstAlsAntwortSelektiert = false,
-                                                                           IstRichtigeAntwort = false,
-                                                                           Text = "Weiß nicht"
-                                                                       });
-                            _befragung.Fragen.Add(AktuelleFrage);
-                        }
-                        AktuelleFrage = new Befragung.Frage
+                        id = AddUndesided(id, aktuelleFrage);
+                        aktuelleFrage = new Befragung.Frage
                                             {
                                                 Text = line,
                                                 Antwortmöglichkeiten = new List<Befragung.Antwortmöglichkeit>()
@@ -84,26 +75,36 @@ namespace af.modul.befragen
                     }
                     else
                     {
-                        AktuelleFrage.Antwortmöglichkeiten.Add(
-                            new Befragung.Antwortmöglichkeit
-                            {
-                                Id = (++id).ToString(CultureInfo.InvariantCulture),
-                                IstAlsAntwortSelektiert = false,
-                                IstRichtigeAntwort = line.EndsWith("*"),
-                                Text = line.Replace("*", string.Empty)
-                            });
+                        if (aktuelleFrage != null)
+                            aktuelleFrage.Antwortmöglichkeiten.Add(
+                                new Befragung.Antwortmöglichkeit
+                                    {
+                                        Id = (++id).ToString(CultureInfo.InvariantCulture),
+                                        IstAlsAntwortSelektiert = false,
+                                        IstRichtigeAntwort = line.EndsWith("*"),
+                                        Text = line.Replace("*", string.Empty)
+                                    });
                     }
 
                 }
-                AktuelleFrage.Antwortmöglichkeiten.Add(new Befragung.Antwortmöglichkeit
-                {
-                    Id = (++id).ToString(CultureInfo.InvariantCulture),
-                    IstAlsAntwortSelektiert = false,
-                    IstRichtigeAntwort = false,
-                    Text = "Weiß nicht"
-                });
-                _befragung.Fragen.Add(AktuelleFrage);
+                AddUndesided(id, aktuelleFrage);
             }
+        }
+
+        private int AddUndesided(int id, Befragung.Frage aktuelleFrage)
+        {
+            if (aktuelleFrage != null)
+            {
+                aktuelleFrage.Antwortmöglichkeiten.Add(new Befragung.Antwortmöglichkeit
+                                                           {
+                                                               Id = (++id).ToString(CultureInfo.InvariantCulture),
+                                                               IstAlsAntwortSelektiert = false,
+                                                               IstRichtigeAntwort = false,
+                                                               Text = "Weiß nicht"
+                                                           });
+                _befragung.Fragen.Add(aktuelleFrage);
+            }
+            return id;
         }
 
         private void AnswerQuestion(string id)
