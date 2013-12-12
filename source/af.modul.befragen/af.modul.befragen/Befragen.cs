@@ -66,7 +66,7 @@ namespace af.modul.befragen
                     }
                     if (line.EndsWith("?"))
                     {
-                        id = AddUndesided(id, aktuelleFrage);
+                        id = AddUndecided(id, aktuelleFrage);
                         aktuelleFrage = new Befragung.Frage
                                             {
                                                 Text = line,
@@ -87,11 +87,11 @@ namespace af.modul.befragen
                     }
 
                 }
-                AddUndesided(id, aktuelleFrage);
+                AddUndecided(id, aktuelleFrage);
             }
         }
 
-        private int AddUndesided(int id, Befragung.Frage aktuelleFrage)
+        private int AddUndecided(int id, Befragung.Frage aktuelleFrage)
         {
             if (aktuelleFrage != null)
             {
@@ -113,11 +113,16 @@ namespace af.modul.befragen
             {
                 return;
             }
-            foreach (var antwortmöglichkeit in _befragung.Fragen.SelectMany(
-                frage => frage.Antwortmöglichkeiten
-                    .Where(antwortmöglichkeit => antwortmöglichkeit.Id == id)))
+
+            foreach (var frage in _befragung.Fragen)
             {
-                antwortmöglichkeit.IstAlsAntwortSelektiert = !antwortmöglichkeit.IstAlsAntwortSelektiert;
+                if (frage.Antwortmöglichkeiten.Any(item => item.Id == id))
+                {
+                    foreach (var antwortmöglichkeit in frage.Antwortmöglichkeiten)
+                    {
+                        antwortmöglichkeit.IstAlsAntwortSelektiert = antwortmöglichkeit.Id == id;
+                    }
+                }
             }
         }
 

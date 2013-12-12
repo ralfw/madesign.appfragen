@@ -9,6 +9,7 @@ namespace af.contracts
     public class Befragung
     {
         public string Dateiname;
+        public bool IstVollständigAusgefuellt;
         public List<Frage> Fragen;
 
         public class Frage
