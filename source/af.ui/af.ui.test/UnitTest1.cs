@@ -93,7 +93,7 @@ namespace af.ui.test
             var befragen = new Befragen( ui );
 
             var fragen = Util.FrageListeErstellen();
-            befragen.Fragen = fragen;
+            befragen.Fragen = fragen.ConvertToViewModelFragen();
 
             befragen.ShowDialog();
         }

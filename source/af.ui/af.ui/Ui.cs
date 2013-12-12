@@ -108,7 +108,6 @@ namespace af.ui
                     antwortmöglichkeit.Id = currentAntwortmöglichkeit.Id;
                     antwortmöglichkeit.Text = currentAntwortmöglichkeit.Text;
                     antwortmöglichkeit.IstAlsAntwortSelektiert = currentAntwortmöglichkeit.IstAlsAntwortSelektiert;
-                    antwortmöglichkeit.IstRichtigeAntwort = currentAntwortmöglichkeit.IstRichtigeAntwort;
                     frage.Antwortmöglichkeiten.Add(antwortmöglichkeit);
                 }
                 fragen.Add(frage);

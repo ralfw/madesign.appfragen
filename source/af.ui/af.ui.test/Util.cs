@@ -10,16 +10,16 @@ namespace af.ui.test
         /// <param name="nummer"></param>
         /// <param name="nummerDerRichtigenAntwort">1-3</param>
         /// <returns>Gibt eine Frage mit Antwortmöglichkeiten zurück</returns>
-        public static BefragungViewModel.Frage FrageErstellen( string nummer, int nummerDerRichtigenAntwort )
+        public static TestBefragung.Frage FrageErstellen( string nummer, int nummerDerRichtigenAntwort )
         {
             if ( nummerDerRichtigenAntwort < 1 || nummerDerRichtigenAntwort > 3 )
             {
                 nummerDerRichtigenAntwort = 1;
             }
-            var frage = new BefragungViewModel.Frage
+            var frage = new TestBefragung.Frage
             {
                 Text = "Frage Nr. " + nummer,
-                Antwortmöglichkeiten = new List<BefragungViewModel.Antwortmöglichkeit>
+                Antwortmöglichkeiten = new List<TestBefragung.Antwortmöglichkeit>
                         {
                             ErstelleAntwortmöglichkeit( "F" + nummer + "A1", "Antwortmöglichkeit 1", nummerDerRichtigenAntwort == 1),
                             ErstelleAntwortmöglichkeit( "F" + nummer + "A2", "Antwortmöglichkeit 2", nummerDerRichtigenAntwort == 2),
@@ -30,9 +30,9 @@ namespace af.ui.test
             return frage;
         }
 
-        public static BefragungViewModel.Antwortmöglichkeit ErstelleAntwortmöglichkeit( string id, string text, bool istRichtigeAntwort = false, bool istAlsAntwortSelektiert = false )
+        public static TestBefragung.Antwortmöglichkeit ErstelleAntwortmöglichkeit( string id, string text, bool istRichtigeAntwort = false, bool istAlsAntwortSelektiert = false )
         {
-            var ant = new BefragungViewModel.Antwortmöglichkeit
+            var ant = new TestBefragung.Antwortmöglichkeit
             {
                 Id = id,
                 Text = text,
@@ -43,13 +43,13 @@ namespace af.ui.test
             return ant;
         }
 
-        public static List<BefragungViewModel.Frage> FrageListeErstellen()
+        public static List<TestBefragung.Frage> FrageListeErstellen()
         {
-            var frageListe = new List<BefragungViewModel.Frage>();
-            var frage = new BefragungViewModel.Frage
+            var frageListe = new List<TestBefragung.Frage>();
+            var frage = new TestBefragung.Frage
             {
                 Text = "Was ist kein Säugetier?",
-                Antwortmöglichkeiten = new List<BefragungViewModel.Antwortmöglichkeit>
+                Antwortmöglichkeiten = new List<TestBefragung.Antwortmöglichkeit>
                                                            {
                                                                ErstelleAntwortmöglichkeit("F1A1", "Hund"),
                                                                ErstelleAntwortmöglichkeit("F1A2", "Katze"),
@@ -59,10 +59,10 @@ namespace af.ui.test
             };
             frageListe.Add( frage );
 
-            var frage2 = new BefragungViewModel.Frage
+            var frage2 = new TestBefragung.Frage
             {
                 Text = "Was ist 2+3?",
-                Antwortmöglichkeiten = new List<BefragungViewModel.Antwortmöglichkeit>
+                Antwortmöglichkeiten = new List<TestBefragung.Antwortmöglichkeit>
                                                             {
                                                                 ErstelleAntwortmöglichkeit("F2A1", "3"),
                                                                 ErstelleAntwortmöglichkeit("F2A2", "5", true),

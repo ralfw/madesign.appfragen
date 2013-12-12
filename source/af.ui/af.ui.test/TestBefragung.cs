@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace af.ui
+namespace af.ui.test
 {
-    public class BefragungViewModel
+    public class TestBefragung
     {
         public string Dateiname { get; set; }
         public List<Frage> Fragen { get; set; }
@@ -22,6 +22,7 @@ namespace af.ui
         {
             public string Id { get; set; }
             public string Text { get; set; }
+            public bool IstRichtigeAntwort { get; set; }
             public bool IstAlsAntwortSelektiert { get; set; }
         }
     }
