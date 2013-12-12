@@ -23,15 +23,15 @@ namespace af.ui
             InitializeComponent();
         }
 
-        public List<UiBefragung.Frage> Fragen
+        public List<BefragungViewModel.Frage> Fragen
         {
-            get { return (List<UiBefragung.Frage>) GetValue( FragenProperty ); }
+            get { return (List<BefragungViewModel.Frage>) GetValue( FragenProperty ); }
             set { SetValue( FragenProperty, value ); }
         }
 
         // Using a DependencyProperty as the backing store for Fragen.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FragenProperty =
-            DependencyProperty.Register("Fragen", typeof(List<UiBefragung.Frage>), typeof(Befragen), new UIPropertyMetadata(null));
+            DependencyProperty.Register("Fragen", typeof(List<BefragungViewModel.Frage>), typeof(Befragen), new UIPropertyMetadata(null));
 
         public ICommand RadioClicked
         {

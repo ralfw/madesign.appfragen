@@ -2,7 +2,7 @@
 
 namespace af.ui
 {
-    public class UiBefragung
+    public class BefragungViewModel
     {
         public string Dateiname { get; set; }
         public List<Frage> Fragen { get; set; }

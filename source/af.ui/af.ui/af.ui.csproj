@@ -64,7 +64,7 @@
     <Compile Include="Befragen.xaml.cs">
       <DependentUpon>Befragen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UiBefragung.cs" />
+    <Compile Include="BefragungViewModel.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Ui.cs" />

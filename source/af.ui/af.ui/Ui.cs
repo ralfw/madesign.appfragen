@@ -98,19 +98,19 @@ namespace af.ui
             Befragen.Visibility = Visibility.Visible;
         }
 
-        private List<UiBefragung.Frage> GetFragen(dynamic jsonObject)
+        private List<BefragungViewModel.Frage> GetFragen(dynamic jsonObject)
         {
-            var fragen = new List<UiBefragung.Frage>();
+            var fragen = new List<BefragungViewModel.Frage>();
             foreach (var currentFrage in jsonObject.payload.Fragen)
             {
-                var frage = new UiBefragung.Frage
+                var frage = new BefragungViewModel.Frage
                                 {
                                     Text = currentFrage.Text,
-                                    Antwortmöglichkeiten = new List<UiBefragung.Antwortmöglichkeit>()
+                                    Antwortmöglichkeiten = new List<BefragungViewModel.Antwortmöglichkeit>()
                                 };
                 foreach ( var currentAntwortmöglichkeit in currentFrage.Antwortmöglichkeiten )
                 {
-                    var antwortmöglichkeit = new UiBefragung.Antwortmöglichkeit();
+                    var antwortmöglichkeit = new BefragungViewModel.Antwortmöglichkeit();
                     antwortmöglichkeit.Id = currentAntwortmöglichkeit.Id;
                     antwortmöglichkeit.Text = currentAntwortmöglichkeit.Text;
                     antwortmöglichkeit.IstAlsAntwortSelektiert = currentAntwortmöglichkeit.IstAlsAntwortSelektiert;

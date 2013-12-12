@@ -9,7 +9,7 @@
         Title="BefragenWindow" Height="350" Width="525">
 
     <Window.Resources>
-        <DataTemplate x:Key="Antworten.Style" DataType="{x:Type ui:UiBefragung+Antwortmöglichkeit}">
+        <DataTemplate x:Key="Antworten.Style" DataType="{x:Type ui:BefragungViewModel+Antwortmöglichkeit}">
             <StackPanel Background="Bisque">
                 <RadioButton IsChecked="{Binding IstAlsAntwortSelektiert}"
                              Command="{Binding RadioClicked, RelativeSource={RelativeSource AncestorType={x:Type ui:Befragen}}}"
@@ -23,7 +23,7 @@
             </StackPanel>
         </DataTemplate>
 
-        <DataTemplate x:Key="Fragen.Style" DataType="{x:Type ui:UiBefragung+Frage}">
+        <DataTemplate x:Key="Fragen.Style" DataType="{x:Type ui:BefragungViewModel+Frage}">
             <StackPanel Background="Aqua">
                 <TextBlock Text="{Binding Text, StringFormat={}Frage: {0}}"/>
                 <ItemsControl ItemsSource="{Binding Antwortmöglichkeiten}"
