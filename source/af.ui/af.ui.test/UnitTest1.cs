@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Windows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using jsonserialization;
 
@@ -83,11 +84,11 @@ namespace af.ui.test
             Assert.IsNotNull( testJsonObject.payload.Fragen[0].Text, "Fragen[0].Text darf nicht null sein" );
         }
 
-        [TestMethod, Ignore]
+        [TestMethod, Ignore, STAThread]
         public void TestBeantwortenKommandoSenden()
         {
             var ui = new Ui();
-            ui.Json_output += jsonOutput => Console.WriteLine( "Json_output: " + jsonOutput );
+            ui.Json_output += jsonOutput => MessageBox.Show("Json_output: " + jsonOutput );
            
             var befragen = new Befragen( ui );
 
