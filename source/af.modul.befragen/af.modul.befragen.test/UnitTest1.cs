@@ -10,7 +10,7 @@ namespace af.modul.befragen.test
     [TestClass]
     public class BefragenUnitTests
     {
-        private const string FILENAME = @".\Properties\Saeugetiere.txt";
+        private const string FILENAME = @"Saeugetiere.txt";
         private Befragen _befragen;
 
         [TestMethod]
