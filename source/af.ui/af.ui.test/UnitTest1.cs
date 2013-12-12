@@ -84,21 +84,17 @@ namespace af.ui.test
         }
 
         [TestMethod, Ignore]
-        public void TestErsteAntwortAuswählen()
+        public void TestBeantwortenKommandoSenden()
         {
-            dynamic expandoObject = new ExpandoObject();
-            expandoObject.cmd = "Fragebogen anzeigen";
-            expandoObject.payload = new ExpandoObject();
-            expandoObject.payload.Fragen = Util.FrageListeErstellen();
-
-            var json = JsonExtensions.ToJson(expandoObject);
             var ui = new Ui();
-            var uiOutput = string.Empty;
-            ui.Json_output += jsonOutput => uiOutput = jsonOutput;
-            ui.Process(json);
+            ui.Json_output += jsonOutput => Console.WriteLine( "Json_output: " + jsonOutput );
+           
+            var befragen = new Befragen( ui );
 
-            dynamic result = uiOutput.FromJson();
-            Assert.AreEqual( "F1A1", result.payload.AntwortmoeglichkeitId, "Dieser Test erwartet das aus der 1. Frage die Antwortmögl. 1 gewählt wurde." );
+            var fragen = Util.FrageListeErstellen();
+            befragen.Fragen = fragen;
+
+            befragen.ShowDialog();
         }
 
         [TestMethod, Ignore]

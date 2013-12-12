@@ -15,11 +15,6 @@ namespace af.ui
         public const string FragenkatalogLaden = "Fragenkatalog laden";
         public const string AuswertungBeenden = "Auswertung beenden";
 
-        public Ui()
-        {
-            _app = Application.Current;
-        }
-
         public void Process(string json)
         {
             dynamic jsonObject = json.FromJson();
@@ -48,7 +43,6 @@ namespace af.ui
 
         private void Starten()
         {
-            Console.WriteLine( "UI: Starten: App:{0}", _app );
             Befragen.Show();
             Auswertung.Show();
             Auswertung.Visibility = Visibility.Hidden;
@@ -161,8 +155,6 @@ namespace af.ui
             Befragen.Fragen = null;
             Befragen.Visibility = Visibility.Visible;
         }
-
-        private readonly Application _app;
 
         private Befragen Befragen
         {
