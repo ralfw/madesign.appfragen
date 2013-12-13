@@ -124,6 +124,21 @@ namespace af.modul.befragen
                     }
                 }
             }
+            CheckQuestionaireCompleted();
+        }
+
+        private void CheckQuestionaireCompleted()
+        {
+            _befragung.IstVollständigAusgefuellt = true;
+            foreach (Befragung.Frage frage in _befragung.Fragen)
+            {
+                var aktuelleFrageBeantwortet = false;
+                foreach (Befragung.Antwortmöglichkeit antwortmöglichkeit in frage.Antwortmöglichkeiten)
+                {
+                    aktuelleFrageBeantwortet |= antwortmöglichkeit.IstAlsAntwortSelektiert;
+                }
+                _befragung.IstVollständigAusgefuellt &= aktuelleFrageBeantwortet;
+            }
         }
 
         private void SendQuestionaire()
@@ -132,6 +147,7 @@ namespace af.modul.befragen
             obj.cmd = "Fragebogen anzeigen";
             obj.payload = new ExpandoObject();
             obj.payload.Fragen = _befragung.Fragen;
+            obj.payload.IstVollständigAusgefuellt = _befragung.IstVollständigAusgefuellt;
             var json = JsonExtensions.ToJson(obj);
             Json_output(json);
         }
