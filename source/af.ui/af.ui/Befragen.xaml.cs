@@ -33,6 +33,16 @@ namespace af.ui
         public static readonly DependencyProperty FragenProperty =
             DependencyProperty.Register("Fragen", typeof(List<BefragungViewModel.Frage>), typeof(Befragen), new UIPropertyMetadata(null));
 
+        public bool IstAuswertenAktiv
+        {
+            get { return (bool) GetValue( IstAuswertenAktivProperty ); }
+            set { SetValue( IstAuswertenAktivProperty, value ); }
+        }
+
+        // Using a DependencyProperty as the backing store for IstAuswertenAktiv.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IstAuswertenAktivProperty =
+            DependencyProperty.Register( "IstAuswertenAktiv", typeof( bool ), typeof( Befragen ), new UIPropertyMetadata( false ) );
+        
         public ICommand RadioClicked
         {
             get
@@ -79,7 +89,5 @@ namespace af.ui
         }
 
         private ICommand _ladeFragenkatalogClicked;
-
-        
     }
 }

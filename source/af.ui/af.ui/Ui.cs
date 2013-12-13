@@ -87,6 +87,7 @@ namespace af.ui
 
             // Liste in Befragung setzen
             Befragen.Fragen = fragen;
+            Befragen.IstAuswertenAktiv = jsonObject.payload.IstVollständigAusgefuellt;
 
             // Befragung anzeigen
             Befragen.Visibility = Visibility.Visible;

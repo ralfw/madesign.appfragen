@@ -39,7 +39,12 @@
         </ScrollViewer>
         
         
-        <Button Content="Auswerten" HorizontalAlignment="Left" Margin="391,277,0,0" Name="auswertenButton" VerticalAlignment="Top"
-                Command="{Binding AuswertungAnzeigenClicked, RelativeSource={RelativeSource AncestorType={x:Type ui:Befragen}}}"/>
+        <Button Name="auswertenButton"
+                Content="Auswerten"
+                Margin="0,0,20,20"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Command="{Binding AuswertungAnzeigenClicked, RelativeSource={RelativeSource AncestorType={x:Type ui:Befragen}}}"
+                IsEnabled="{Binding IstAuswertenAktiv, RelativeSource={RelativeSource AncestorType={x:Type ui:Befragen}}}"/>
     </Grid>
 </Window>
