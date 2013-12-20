@@ -13,6 +13,8 @@ namespace af.modul.befragen
     public class Befragen : IComponent
     {
         private readonly Befragung _befragung;
+        private int _id;
+
         public Befragen(Befragung befragung)
         {
             _befragung = befragung;
@@ -55,7 +57,7 @@ namespace af.modul.befragen
             TextReader textReader;
             using (textReader = new StreamReader(fileName))
             {
-                var id = 0;
+                _id = 0;
                 Befragung.Frage aktuelleFrage = null;
                 while (textReader.Peek() >= 0)
                 {
@@ -66,7 +68,12 @@ namespace af.modul.befragen
                     }
                     if (line.EndsWith("?"))
                     {
-                        id = AddUndecided(id, aktuelleFrage);
+                        // Add undecided to former question
+                        if (aktuelleFrage != null)
+                        {
+                            _id = AddUndecided(aktuelleFrage);
+                        }
+                        // create next question
                         aktuelleFrage = new Befragung.Frage
                                             {
                                                 Text = line,
@@ -75,36 +82,35 @@ namespace af.modul.befragen
                     }
                     else
                     {
-                        if (aktuelleFrage != null)
-                            aktuelleFrage.Antwortmöglichkeiten.Add(
-                                new Befragung.Antwortmöglichkeit
-                                    {
-                                        Id = (++id).ToString(CultureInfo.InvariantCulture),
-                                        IstAlsAntwortSelektiert = false,
-                                        IstRichtigeAntwort = line.EndsWith("*"),
-                                        Text = line.Replace("*", string.Empty)
-                                    });
+                        if (aktuelleFrage == null)
+                        {
+                            continue;
+                        }
+                        aktuelleFrage.Antwortmöglichkeiten.Add(AddPossibleAnsweringOption(line)
+                           );
                     }
-
                 }
-                AddUndecided(id, aktuelleFrage);
+                _id = AddUndecided(aktuelleFrage);
             }
         }
 
-        private int AddUndecided(int id, Befragung.Frage aktuelleFrage)
+        private int AddUndecided(Befragung.Frage aktuelleFrage)
         {
-            if (aktuelleFrage != null)
-            {
-                aktuelleFrage.Antwortmöglichkeiten.Add(new Befragung.Antwortmöglichkeit
-                                                           {
-                                                               Id = (++id).ToString(CultureInfo.InvariantCulture),
-                                                               IstAlsAntwortSelektiert = false,
-                                                               IstRichtigeAntwort = false,
-                                                               Text = "Weiß nicht"
-                                                           });
-                _befragung.Fragen.Add(aktuelleFrage);
-            }
-            return id;
+            aktuelleFrage.Antwortmöglichkeiten.Add(AddPossibleAnsweringOption("Weiß nicht"));
+            _befragung.Fragen.Add(aktuelleFrage);
+            return _id;
+        }
+
+        private Befragung.Antwortmöglichkeit AddPossibleAnsweringOption(string line)
+        {
+            _id = _id + 1;
+            return new Befragung.Antwortmöglichkeit
+                       {
+                           Id = _id.ToString(CultureInfo.InvariantCulture),
+                           IstAlsAntwortSelektiert = false,
+                           IstRichtigeAntwort = line.EndsWith("*"),
+                           Text = line.Replace("*", string.Empty)
+                       };
         }
 
         private void AnswerQuestion(string id)
