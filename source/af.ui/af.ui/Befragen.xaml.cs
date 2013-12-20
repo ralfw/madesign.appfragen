@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using Microsoft.Win32;
 
@@ -89,5 +91,27 @@ namespace af.ui
         }
 
         private ICommand _ladeFragenkatalogClicked;
+    }
+
+    public class NegatingConverter : IValueConverter
+    {
+
+        public object Convert( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
+        {
+            if ( value is double )
+            {
+                return -( (double) value );
+            }
+            return value;
+        }
+
+        public object ConvertBack( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
+        {
+            if ( value is double )
+            {
+                return +(double) value;
+            }
+            return value;
+        }
     }
 }

@@ -6,11 +6,11 @@
         xmlns:ui="clr-namespace:af.ui"
         mc:Ignorable="d" 
         d:DesignHeight="300" d:DesignWidth="400"
-        Title="BefragenWindow" Height="350" Width="525">
+        Title="BefragenWindow" Height="450" Width="525">
 
     <Window.Resources>
         <DataTemplate x:Key="Antworten.Style" DataType="{x:Type ui:BefragungViewModel+Antwortmöglichkeit}">
-            <StackPanel Background="Bisque">
+            <StackPanel Background="OrangeRed" Opacity="0.7">
                 <RadioButton IsChecked="{Binding IstAlsAntwortSelektiert}"
                              Command="{Binding RadioClicked, RelativeSource={RelativeSource AncestorType={x:Type ui:Befragen}}}"
                              CommandParameter="{Binding Id}">
@@ -20,20 +20,58 @@
         </DataTemplate>
 
         <DataTemplate x:Key="Fragen.Style" DataType="{x:Type ui:BefragungViewModel+Frage}">
-            <StackPanel Background="Aqua">
+            <StackPanel Background="Aqua" Opacity="0.7">
                 <TextBlock Text="{Binding Text, StringFormat={}Frage: {0}}"/>
                 <ItemsControl ItemsSource="{Binding Antwortmöglichkeiten}"
                               ItemTemplate="{StaticResource Antworten.Style}"
                               Margin="0,0,0,5"/>
             </StackPanel>
         </DataTemplate>
+
+        <ImageSource x:Key="Hintergrund">./Hintergrund.jpg</ImageSource>
     </Window.Resources>
     
     <Grid>
-        <Button Content="Öffne Fragenkatalog" HorizontalAlignment="Left" Margin="12,12,0,0" Name="ladenButton" VerticalAlignment="Top"
+        <Image Source="{StaticResource Hintergrund}" Stretch="Fill" Width="500" Height="300"/>
+
+        <StackPanel Orientation="Horizontal" x:Name="stack" Margin="150,10,00,0"
+                    Height="40"
+                    Width="300"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+            <StackPanel.Resources>
+                <ui:NegatingConverter x:Key="NegatingConverter" />
+                <Storyboard x:Key="slide">
+                    <DoubleAnimation From="0" To="{Binding Width, ElementName=canvas, Converter={StaticResource NegatingConverter}}" Duration="00:00:10"
+                          Storyboard.TargetProperty="X"
+                          Storyboard.TargetName="transferCurreny"
+                          RepeatBehavior="Forever"/>
+                </Storyboard>
+            </StackPanel.Resources>
+            
+            <StackPanel.RenderTransform>
+                <TranslateTransform x:Name="transferCurreny" X="0"/>
+            </StackPanel.RenderTransform>
+            
+            <StackPanel.Triggers>
+                <EventTrigger RoutedEvent="StackPanel.Loaded">
+                    <BeginStoryboard Storyboard="{StaticResource slide}" />
+                </EventTrigger>
+                <EventTrigger RoutedEvent="StackPanel.SizeChanged">
+                    <BeginStoryboard Storyboard="{StaticResource slide}" />
+                </EventTrigger>
+            </StackPanel.Triggers>
+            
+            <Canvas x:Name="canvas" Width="{Binding ActualWidth, ElementName=stack}">
+                <TextBlock Text="+++ Happy Christmas +++" FontSize="20"  x:Name="txtKron" Canvas.Left="0"/>
+                <TextBlock Text="{Binding Text, ElementName=txtKron}" FontSize="20" Canvas.Left="{Binding Width, ElementName=canvas}"/>
+            </Canvas>
+        </StackPanel>
+        
+        <Button Content="Öffne Fragenkatalog" HorizontalAlignment="Left" Margin="12,50,0,0" Name="ladenButton" VerticalAlignment="Top"
                 Command="{Binding LadeFragenkatalogClicked, RelativeSource={RelativeSource AncestorType={x:Type ui:Befragen}}}"/>
 
-        <ScrollViewer Margin="50,50,50,50">
+        <ScrollViewer Margin="50,80,50,50">
             <ItemsControl ItemsSource="{Binding Fragen, RelativeSource={RelativeSource AncestorType={x:Type ui:Befragen}}}"
                           ItemTemplate="{StaticResource Fragen.Style}"/>
         </ScrollViewer>
